@@ -65,3 +65,25 @@ create index if not exists ganadores_sorteo_idx on public.ganadores (sorteo_id);
 alter table public.participantes enable row level security;
 alter table public.sorteos       enable row level security;
 alter table public.ganadores     enable row level security;
+
+-- ---------------------------------------------------------------------
+-- Vista para listar en la home los eventos que ya tienen participantes,
+-- así no hay que escribir el slug a mano cada vez (y arriesgarse a un
+-- typo que "cree" un evento nuevo por error).
+--
+-- security_invoker = true hace que la vista respete el RLS de la tabla
+-- de origen para cualquiera que no sea el service_role: como no hay
+-- políticas, la anon key sigue sin poder leer nada a través de la vista.
+-- El revoke es una segunda capa de seguridad por las dudas.
+-- ---------------------------------------------------------------------
+create or replace view public.eventos_resumen
+with (security_invoker = true)
+as
+select
+  evento_id,
+  count(*)::int as total_participantes,
+  max(created_at) as ultima_actividad
+from public.participantes
+group by evento_id;
+
+revoke all on public.eventos_resumen from anon, authenticated;

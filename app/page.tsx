@@ -1,8 +1,38 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { normalizarEventoId } from "@/lib/utils";
+import { getSupabase } from "@/lib/supabase";
+import { formatearFechaHora, normalizarEventoId } from "@/lib/utils";
 
 const EVENTO_DEMO = "mi-evento-2026";
+
+type EventoResumen = {
+  evento_id: string;
+  total_participantes: number;
+  ultima_actividad: string;
+};
+
+/**
+ * No existe una tabla "eventos": el slug de la URL es el identificador.
+ * Esta vista agrupa a los participantes por evento_id para poder listar
+ * acá los que ya tienen actividad, en vez de obligar a escribir el slug
+ * de memoria cada vez (con el riesgo de un typo que "cree" otro evento).
+ */
+async function obtenerEventosRecientes(): Promise<EventoResumen[]> {
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from("eventos_resumen")
+      .select("evento_id, total_participantes, ultima_actividad")
+      .order("ultima_actividad", { ascending: false })
+      .limit(12);
+    if (error) throw error;
+    return (data ?? []) as unknown as EventoResumen[];
+  } catch {
+    // Si todavía no corriste el SQL de la vista o faltan las env vars,
+    // mostramos la home igual, solo sin la lista.
+    return [];
+  }
+}
 
 async function abrirEvento(formData: FormData) {
   "use server";
@@ -10,7 +40,9 @@ async function abrirEvento(formData: FormData) {
   redirect(`/evento/${eventoId || EVENTO_DEMO}/admin`);
 }
 
-export default function Home() {
+export default async function Home() {
+  const eventos = await obtenerEventosRecientes();
+
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-16">
       <h1 className="text-4xl font-bold text-slate-900">Registro y sorteos por QR</h1>
@@ -18,15 +50,47 @@ export default function Home() {
         Un solo QR en la entrada, un formulario simple y sorteos cada hora.
       </p>
 
+      {eventos.length > 0 && (
+        <section className="tarjeta mt-8">
+          <h2 className="text-lg font-semibold text-slate-900">Tus eventos</h2>
+          <ul className="mt-3 divide-y divide-slate-100">
+            {eventos.map((evento) => (
+              <li
+                key={evento.evento_id}
+                className="flex flex-wrap items-center justify-between gap-3 py-3"
+              >
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-slate-900">
+                    {evento.evento_id.replace(/-/g, " ")}
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    {evento.total_participantes} participantes · última actividad{" "}
+                    {formatearFechaHora(evento.ultima_actividad)}
+                  </p>
+                </div>
+                <div className="flex shrink-0 gap-2">
+                  <Link href={`/evento/${evento.evento_id}/admin`} className="boton-secundario">
+                    Panel
+                  </Link>
+                  <Link href={`/evento/${evento.evento_id}`} className="boton-secundario">
+                    Registro
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <form action={abrirEvento} className="tarjeta mt-8 space-y-4">
         <div>
           <label className="etiqueta" htmlFor="evento">
-            Nombre del evento
+            {eventos.length > 0 ? "Crear o abrir otro evento" : "Nombre del evento"}
           </label>
           <input
             id="evento"
             name="evento"
-            defaultValue={EVENTO_DEMO}
+            defaultValue={eventos.length > 0 ? "" : EVENTO_DEMO}
             placeholder={EVENTO_DEMO}
             className="campo"
           />
@@ -59,13 +123,6 @@ export default function Home() {
           </li>
         </ol>
       </section>
-
-      <p className="mt-8 text-sm text-slate-500">
-        ¿Querés ver el formulario?{" "}
-        <Link href={`/evento/${EVENTO_DEMO}`} className="font-medium text-indigo-600 underline">
-          Abrir el registro de ejemplo
-        </Link>
-      </p>
     </main>
   );
 }
