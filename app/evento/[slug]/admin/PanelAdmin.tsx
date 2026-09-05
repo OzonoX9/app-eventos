@@ -8,6 +8,7 @@ import { fetcher } from "@/lib/fetcher";
 import type { Participante, ParticipantePublico, SorteoConGanadores } from "@/lib/types";
 import { formatearFechaHora, formatearHora } from "@/lib/utils";
 import TarjetaQR from "./TarjetaQR";
+import { Switch } from "nextjs-darkmode/switch";
 
 type RespuestaParticipantes = {
   participantes: Participante[];
@@ -124,7 +125,7 @@ export default function PanelAdmin({
     <main className="mx-auto w-full max-w-6xl px-4 py-8">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
+          <p className="text-sm font-semibold uppercase tracking-wide text-orange-600">
             {eventoId.replace(/-/g, " ")}
           </p>
           <h1 className="text-2xl font-bold text-slate-900">Panel de control</h1>
@@ -345,9 +346,13 @@ function Metrica({
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
       <p className="text-xs uppercase tracking-wide text-slate-500">{etiqueta}</p>
-      <p className={`mt-1 text-3xl font-bold ${destacado ? "text-indigo-600" : "text-slate-900"}`}>
+      <p className={`mt-1 text-3xl font-bold ${destacado ? "text-orange-600" : "text-slate-900"}`}>
         {valor}
       </p>
     </div>
   );
+}
+
+export function BotonTema() {
+  return <Switch size={24} />; // skipSystem para saltar el modo "system"
 }

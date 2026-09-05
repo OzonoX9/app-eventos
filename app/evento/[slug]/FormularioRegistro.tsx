@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { FormularioRegistro as Datos } from "@/lib/types";
 import { validarRegistro } from "@/lib/utils";
+import { Switch } from "nextjs-darkmode/switch";
 
 const VACIO: Datos = { nombre: "", apellido: "", cedula: "", email: "", direccion: "" };
 
@@ -155,4 +156,8 @@ export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
       </p>
     </form>
   );
+}
+
+export function BotonTema() {
+  return <Switch size={24} />; // skipSystem para saltar el modo "system"
 }

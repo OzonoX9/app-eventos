@@ -36,7 +36,7 @@ export default function VistaPantalla({ eventoId }: { eventoId: string }) {
 
   return (
     <div className="w-full text-center">
-      <p className="text-xl uppercase tracking-[0.2em] text-indigo-400">
+      <p className="text-xl uppercase tracking-[0.2em] text-orange-400">
         {formatearHora(sorteo.created_at)}
       </p>
       <h1 className="mt-2 text-5xl font-black text-white sm:text-6xl">{sorteo.titulo}</h1>
@@ -54,7 +54,7 @@ export default function VistaPantalla({ eventoId }: { eventoId: string }) {
             <p className={`font-bold text-white ${muchos ? "text-2xl" : "text-4xl"}`}>
               {g.participante ? `${g.participante.nombre} ${g.participante.apellido}` : "—"}
             </p>
-            <p className="mt-1 font-mono text-sm text-indigo-200">{g.participante?.cedula ?? ""}</p>
+            <p className="mt-1 font-mono text-sm text-orange-200">{g.participante?.cedula ?? ""}</p>
           </li>
         ))}
       </ul>

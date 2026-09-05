@@ -1,8 +1,16 @@
 @import "tailwindcss";
+@import "nextjs-darkmode/css";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
 }
 
 @theme inline {
@@ -23,7 +31,7 @@ body {
   .campo {
     @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900
       placeholder:text-slate-400 outline-none transition
-      focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200;
+      focus:border-orange-500 focus:ring-2 focus:ring-orange-200;
   }
 
   .campo-error {
@@ -35,9 +43,9 @@ body {
   }
 
   .boton {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3
-      text-base font-semibold text-white transition hover:bg-indigo-700
-      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-5 py-3
+      text-base font-semibold text-white transition hover:bg-orange-700
+      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600
       disabled:cursor-not-allowed disabled:opacity-60;
   }
 

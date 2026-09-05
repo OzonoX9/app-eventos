@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { normalizarEventoId } from "@/lib/utils";
-import FormularioRegistro from "./FormularioRegistro";
+import FormularioRegistro, { BotonTema } from "./FormularioRegistro";
 
 export const metadata = {
   title: "Registro del evento",
@@ -20,11 +20,12 @@ export default async function PaginaEvento({
 
   return (
     <main className="mx-auto w-full max-w-lg px-4 py-10">
+      {/*<BotonTema />*/}
       <header className="mb-6 text-center">
-        <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
+        <p className="text-5xl font-semibold uppercase tracking-wide text-orange-600">
           {nombreEvento}
         </p>
-        <h1 className="mt-1 text-3xl font-bold text-slate-900">Registrate y participá</h1>
+        <h1 className="mt-6 text-2xl font-bold text-slate-900">Registrate y participá</h1>
         <p className="mt-2 text-slate-600">
           Completá tus datos para entrar en los sorteos por hora y en el sorteo final.
         </p>
