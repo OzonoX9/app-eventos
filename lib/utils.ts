@@ -47,7 +47,7 @@ export function validarRegistro(entrada: Partial<FormularioRegistro>): Resultado
 
   if (nombre.length < 2) errores.nombre = "Ingresá tu nombre";
   if (apellido.length < 2) errores.apellido = "Ingresá tu apellido";
-  if (cedula.length < 5 || cedula.length > 15) errores.cedula = "Cédula inválida (solo números)";
+  if (cedula.length < 6 || cedula.length > 7) errores.cedula = "Cédula inválida (solo números)";
   if (telefono.length < 6 || telefono.length > 15) errores.telefono = "Teléfono inválido (solo números)";
   if (direccion.length < 5) errores.direccion = "Ingresá tu dirección";
 

@@ -15,6 +15,7 @@ const CAMPOS: Array<{
   placeholder: string;
   inputMode?: "text" | "email" | "numeric";
   autoComplete?: string;
+  maxLenght?: number;
 }> = [
   { name: "nombre", label: "Nombre", type: "text", placeholder: "Juan", autoComplete: "given-name" },
   { name: "apellido", label: "Apellido", type: "text", placeholder: "Pérez", autoComplete: "family-name" },
@@ -24,6 +25,7 @@ const CAMPOS: Array<{
     type: "text",
     placeholder: "1234567",
     inputMode: "numeric",
+    maxLenght: 7,
   },
   {
     name: "telefono",
@@ -124,6 +126,7 @@ export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
             type={campo.type}
             inputMode={campo.inputMode}
             autoComplete={campo.autoComplete}
+            maxLength={campo.maxLenght}
             placeholder={campo.placeholder}
             value={datos[campo.name]}
             onChange={(e) => actualizar(campo.name, e.target.value)}
