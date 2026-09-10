@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { normalizarEventoId } from "@/lib/utils";
-import FormularioRegistro, { BotonTema } from "./FormularioRegistro";
+import FormularioRegistro from "./FormularioRegistro";
 
 export const metadata = {
   title: "Registro del evento",
@@ -20,7 +20,6 @@ export default async function PaginaEvento({
 
   return (
     <main className="mx-auto w-full max-w-lg px-4 py-10">
-      {/*<BotonTema />*/}
       <header className="mb-6 text-center">
         <p className="text-5xl font-semibold uppercase tracking-wide text-orange-600">
           {nombreEvento}

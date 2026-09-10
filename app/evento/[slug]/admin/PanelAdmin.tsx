@@ -8,7 +8,6 @@ import { fetcher } from "@/lib/fetcher";
 import type { Participante, ParticipantePublico, SorteoConGanadores } from "@/lib/types";
 import { formatearFechaHora, formatearHora } from "@/lib/utils";
 import TarjetaQR from "./TarjetaQR";
-import { Switch } from "nextjs-darkmode/switch";
 
 type RespuestaParticipantes = {
   participantes: Participante[];
@@ -92,12 +91,12 @@ export default function PanelAdmin({
   }
 
   function exportarCSV() {
-    const encabezados = ["Nombre", "Apellido", "Cédula", "Correo", "Dirección", "Registrado"];
+    const encabezados = ["Nombre", "Apellido", "Cédula", "Teléfono", "Dirección", "Registrado"];
     const filas = participantes.map((p) => [
       p.nombre,
       p.apellido,
       p.cedula,
-      p.email,
+      p.telefono,
       p.direccion,
       new Date(p.created_at).toLocaleString("es-PY"),
     ]);
@@ -308,7 +307,7 @@ export default function PanelAdmin({
                     <tr>
                       <th className="pb-2">Nombre</th>
                       <th className="pb-2">Cédula</th>
-                      <th className="pb-2">Correo</th>
+                      <th className="pb-2">Teléfono</th>
                       <th className="pb-2">Hora</th>
                     </tr>
                   </thead>
@@ -319,7 +318,7 @@ export default function PanelAdmin({
                           {p.nombre} {p.apellido}
                         </td>
                         <td className="py-2 pr-3 font-mono text-xs text-slate-600">{p.cedula}</td>
-                        <td className="py-2 pr-3 text-slate-600">{p.email}</td>
+                        <td className="py-2 pr-3 text-slate-600">{p.telefono}</td>
                         <td className="py-2 text-slate-500">{formatearHora(p.created_at)}</td>
                       </tr>
                     ))}
@@ -351,8 +350,4 @@ function Metrica({
       </p>
     </div>
   );
-}
-
-export function BotonTema() {
-  return <Switch size={24} />; // skipSystem para saltar el modo "system"
 }

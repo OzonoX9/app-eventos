@@ -3,9 +3,8 @@
 import { useState } from "react";
 import type { FormularioRegistro as Datos } from "@/lib/types";
 import { validarRegistro } from "@/lib/utils";
-import { Switch } from "nextjs-darkmode/switch";
 
-const VACIO: Datos = { nombre: "", apellido: "", cedula: "", email: "", direccion: "" };
+const VACIO: Datos = { nombre: "", apellido: "", cedula: "", telefono: "", direccion: "" };
 
 type Errores = Partial<Record<keyof Datos, string>>;
 
@@ -21,18 +20,17 @@ const CAMPOS: Array<{
   { name: "apellido", label: "Apellido", type: "text", placeholder: "Pérez", autoComplete: "family-name" },
   {
     name: "cedula",
-    label: "Número de cédula",
+    label: "Número de cédula (Ingresar cédula válida sin puntos ni guiones)",
     type: "text",
     placeholder: "1234567",
     inputMode: "numeric",
   },
   {
-    name: "email",
-    label: "Correo electrónico",
-    type: "email",
-    placeholder: "juan@correo.com",
-    inputMode: "email",
-    autoComplete: "email",
+    name: "telefono",
+    label: "Número de teléfono",
+    type: "text",
+    placeholder: "0985123456",
+    inputMode: "numeric",
   },
   {
     name: "direccion",
@@ -40,7 +38,7 @@ const CAMPOS: Array<{
     type: "text",
     placeholder: "Av. Principal 123, Asunción",
     autoComplete: "street-address",
-  },
+  }
 ];
 
 export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
@@ -156,8 +154,4 @@ export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
       </p>
     </form>
   );
-}
-
-export function BotonTema() {
-  return <Switch size={24} />; // skipSystem para saltar el modo "system"
 }

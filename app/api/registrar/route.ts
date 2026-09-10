@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     nombre: String(body.nombre ?? ""),
     apellido: String(body.apellido ?? ""),
     cedula: String(body.cedula ?? ""),
-    email: String(body.email ?? ""),
+    telefono: String(body.telefono ?? ""),
     direccion: String(body.direccion ?? ""),
   });
 

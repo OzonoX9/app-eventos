@@ -6,7 +6,7 @@ import { normalizarEventoId } from "@/lib/utils";
 
 /**
  * GET /api/participantes?evento=slug
- * Solo admin: devuelve la lista completa (incluye correo y dirección).
+ * Solo admin: devuelve la lista completa (incluye teléfono y dirección).
  */
 export async function GET(request: Request) {
   if (!(await esAdmin())) {

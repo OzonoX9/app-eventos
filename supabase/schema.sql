@@ -14,7 +14,7 @@ create table if not exists public.participantes (
   nombre      text        not null,
   apellido    text        not null,
   cedula      text        not null,
-  email       text        not null,
+  telefono    text        not null,
   direccion   text        not null,
   created_at  timestamptz not null default now()
 );
@@ -87,3 +87,14 @@ from public.participantes
 group by evento_id;
 
 revoke all on public.eventos_resumen from anon, authenticated;
+
+-- ---------------------------------------------------------------------
+-- MIGRACIÓN (2026-09): se reemplazó el campo "email" por "telefono".
+-- Si ya tenías la tabla creada con la columna email, corré esto una
+-- sola vez en el SQL Editor de Supabase (no hace falta si es instalación nueva,
+-- la definición de la tabla de arriba ya incluye "telefono"):
+--
+--   alter table public.participantes add column if not exists telefono text not null default '';
+--   alter table public.participantes alter column telefono drop default;
+--   alter table public.participantes drop column if exists email;
+-- ---------------------------------------------------------------------
