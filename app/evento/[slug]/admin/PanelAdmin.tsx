@@ -6,7 +6,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import type { Participante, ParticipantePublico, SorteoConGanadores } from "@/lib/types";
-import { formatearFechaHora, formatearHora } from "@/lib/utils";
+import { formatearFecha, formatearFechaHora, formatearHora } from "@/lib/utils";
 import TarjetaQR from "./TarjetaQR";
 
 type RespuestaParticipantes = {
@@ -115,7 +115,8 @@ export default function PanelAdmin({
 
   async function cerrarSesion() {
     await fetch("/api/admin/sesion", { method: "DELETE" });
-    router.refresh();
+    //router.refresh(); //Esta funcion cierra la sesion pero no redirige a la pagina de login, por eso se usa router.push
+    router.replace("/");
   }
 
   const mensajeError = errorSorteo ?? errorParticipantes?.message ?? null;
@@ -154,8 +155,8 @@ export default function PanelAdmin({
       )}
 
       <section className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Metrica etiqueta="Registrados" valor={isLoading ? "…" : stats.total} destacado />
-        <Metrica etiqueta="Última hora" valor={isLoading ? "…" : stats.ultimaHora} />
+        <Metrica etiqueta="Cantidad de Participantes" valor={isLoading ? "…" : stats.total} destacado />
+        <Metrica etiqueta="Registrados en la Última hora" valor={isLoading ? "…" : stats.ultimaHora} />
         <Metrica etiqueta="Sorteos" valor={sorteos.length} />
         <Metrica etiqueta="Ganadores" valor={totalGanadores} />
       </section>
@@ -309,6 +310,7 @@ export default function PanelAdmin({
                       <th className="pb-2">Cédula</th>
                       <th className="pb-2">Teléfono</th>
                       <th className="pb-2">Hora</th>
+                      <th className="pb-2">Fecha</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -320,6 +322,7 @@ export default function PanelAdmin({
                         <td className="py-2 pr-3 font-mono text-xs text-slate-600">{p.cedula}</td>
                         <td className="py-2 pr-3 text-slate-600">{p.telefono}</td>
                         <td className="py-2 text-slate-500">{formatearHora(p.created_at)}</td>
+                        <td className="py-2 text-slate-500">{formatearFecha(p.created_at)}</td>
                       </tr>
                     ))}
                   </tbody>

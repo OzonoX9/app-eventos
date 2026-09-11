@@ -71,3 +71,11 @@ export function formatearFechaHora(iso: string): string {
     minute: "2-digit",
   });
 }
+
+export function formatearFecha(iso: string): string {
+  return new Date(iso).toLocaleDateString("es-PY", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
