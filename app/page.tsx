@@ -4,6 +4,11 @@ import { obtenerNombreEvento } from "@/lib/eventos-config";
 import { getSupabase } from "@/lib/supabase";
 import { formatearFechaHora, normalizarEventoId } from "@/lib/utils";
 
+// Sin esto, Next prerenderiza "/" como página estática en el build (no usa
+// fetch(), así que no detecta la llamada a Supabase como dinámica) y la
+// lista de "Tus eventos" queda congelada hasta el próximo deploy.
+export const dynamic = "force-dynamic";
+
 const EVENTO_DEMO = "mi-evento-2026";
 
 type EventoResumen = {
