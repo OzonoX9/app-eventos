@@ -20,7 +20,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f66820",
+  themeColor: "#0a0a0a",
+  // Hace que los controles nativos (scrollbars, selects, autocompletado)
+  // se dibujen oscuros y no en blanco sobre el tema negro.
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

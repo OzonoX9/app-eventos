@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { obtenerNombreEvento } from "@/lib/eventos-config";
 import { getSupabase } from "@/lib/supabase";
 import { formatearFechaHora, normalizarEventoId } from "@/lib/utils";
 
@@ -45,25 +46,25 @@ export default async function Home() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-16">
-      <h1 className="text-4xl font-bold text-slate-900">Registro y sorteos por QR</h1>
-      <p className="mt-3 text-lg text-slate-600">
+      <h1 className="text-4xl font-bold text-foreground">Registro y sorteos por QR</h1>
+      <p className="mt-3 text-lg text-tenue">
         Un solo QR en la entrada, un formulario simple y sorteos cada hora.
       </p>
 
       {eventos.length > 0 && (
         <section className="tarjeta mt-8">
-          <h2 className="text-lg font-semibold text-slate-900">Tus eventos</h2>
-          <ul className="mt-3 divide-y divide-slate-100">
+          <h2 className="text-lg font-semibold text-foreground">Tus eventos</h2>
+          <ul className="mt-3 divide-y divide-linea">
             {eventos.map((evento) => (
               <li
                 key={evento.evento_id}
                 className="flex flex-wrap items-center justify-between gap-3 py-3"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-medium text-slate-900">
-                    {evento.evento_id.replace(/-/g, " ")}
+                  <p className="truncate font-medium text-foreground">
+                    {obtenerNombreEvento(evento.evento_id)}
                   </p>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-tenue">
                     {evento.total_participantes} participantes · última actividad{" "}
                     {formatearFechaHora(evento.ultima_actividad)}
                   </p>
@@ -94,7 +95,7 @@ export default async function Home() {
             placeholder={EVENTO_DEMO}
             className="campo"
           />
-          <p className="mt-1.5 text-sm text-slate-500">
+          <p className="mt-1.5 text-sm text-tenue">
             Se convierte en la URL del evento. No hace falta crearlo antes: se usa tal cual.
           </p>
         </div>
@@ -104,10 +105,10 @@ export default async function Home() {
       </form>
 
       <section className="mt-10">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-acento">
           Cómo funciona
         </h2>
-        <ol className="mt-3 space-y-2 text-slate-700">
+        <ol className="mt-3 space-y-2 text-neutral-300">
           <li>
             <strong>1.</strong> Entrás al panel y descargás el QR del evento.
           </li>

@@ -66,6 +66,59 @@ Abrí http://localhost:3000.
 3. Cargá las mismas tres variables de entorno en **Settings → Environment Variables**.
 4. Deploy. El QR va a apuntar al dominio de producción automáticamente.
 
+## Logos del evento
+
+Como no hay tabla `eventos`, los logos se declaran en el repo:
+
+1. Copiá las imágenes a `public/logos/<slug>/`. **Todo en minúsculas**: en Vercel las
+   rutas distinguen mayúsculas y un `Logo.png` referenciado como `logo.png` da 404,
+   aunque en macOS funcione.
+2. Agregá una entrada en `lib/eventos-config.ts` con el **slug exacto** de la URL:
+
+```ts
+const EVENTOS: Record<string, ConfigEvento> = {
+  "natsumatsuri-2026": {
+    nombre: "Natsumatsuri 2026", // opcional: si falta se usa el slug con espacios
+    logo: {
+      src: "/logos/natsumatsuri-2026/natsumatsuri-grande-blanco.png",
+      alt: "Natsumatsuri 2026",
+      ancho: 2180, // tamaño real del archivo, para reservar espacio
+      alto: 1081,
+    },
+    logoCompacto: { /* versión chica, mismo formato */ },
+    sponsors: [{ /* ...logos con href opcional */ }],
+  },
+};
+```
+
+Dónde aparece cada uno:
+
+- `logo` (grande) → formulario de registro y vista de pantalla.
+- `logoCompacto` (chico) → encabezado del panel. Si no se define, cae al grande.
+- `sponsors` → franja "Con el apoyo de" al pie del formulario y de la pantalla.
+
+Si un evento no tiene logo configurado no se renderiza nada y el formulario muestra el
+nombre en grande, como antes. El componente es `app/components/LogoEvento.tsx`.
+
+## Tema visual
+
+Paleta **negro · gris · naranja**, pensada para logos de letras blancas. Todos los
+colores salen de variables CSS declaradas en `app/globals.css`; cambiando esas cinco
+líneas se recolorea la app entera:
+
+- `--background` `#0a0a0a` — fondo de página
+- `--superficie` / `--superficie-alta` — grises de tarjetas e inputs
+- `--linea` — bordes y separadores
+- `--tenue` — texto secundario
+- `--acento` / `--acento-fuerte` — naranja de textos y botones
+
+Se exponen como utilidades de Tailwind vía `@theme inline` (`bg-superficie`,
+`text-tenue`, `text-acento`, `border-linea`…), además de las clases compartidas
+`.tarjeta`, `.campo`, `.boton`, `.boton-secundario` y `.alerta`.
+
+El QR se sigue dibujando sobre blanco a propósito: invertirlo baja la tasa de lectura de
+varias cámaras y además está pensado para imprimirse.
+
 ## Decisiones de diseño
 
 **Todo el acceso a la base pasa por el servidor.** Las tablas tienen RLS activado y
@@ -91,6 +144,8 @@ direcciones únicamente los ve el admin autenticado.
 ```
 app/
 ├── page.tsx                        # home
+├── components/
+│   └── LogoEvento.tsx              # logo del evento + franja de sponsors
 ├── api/
 │   ├── registrar/route.ts          # POST público: alta de participante
 │   ├── participantes/route.ts      # GET admin: lista + métricas
@@ -102,6 +157,8 @@ app/
     ├── admin/                      # panel + QR + sorteos
     └── pantalla/                   # vista para proyector
 lib/
+├── eventos-config.ts # logos y nombre por evento (slug → config)
+│                     # las imágenes viven en public/logos/<slug>/
 ├── supabase.ts   # cliente service_role (solo servidor)
 ├── auth.ts       # sesión de admin por cookie httpOnly
 ├── sorteo.ts     # Fisher-Yates criptográfico

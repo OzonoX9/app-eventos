@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import useSWR from "swr";
+import LogoEvento from "@/app/components/LogoEvento";
+import { obtenerNombreEvento } from "@/lib/eventos-config";
 import { fetcher } from "@/lib/fetcher";
 import type { Participante, ParticipantePublico, SorteoConGanadores } from "@/lib/types";
 import { formatearFecha, formatearFechaHora, formatearHora } from "@/lib/utils";
@@ -124,11 +126,14 @@ export default function PanelAdmin({
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-orange-600">
-            {eventoId.replace(/-/g, " ")}
-          </p>
-          <h1 className="text-2xl font-bold text-slate-900">Panel de control</h1>
+        <div className="flex items-center gap-3">
+          <LogoEvento eventoId={eventoId} tipo="compacto" tamano="md" />
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-acento">
+              {obtenerNombreEvento(eventoId)}
+            </p>
+            <h1 className="text-2xl font-bold text-foreground">Panel de control</h1>
+          </div>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link href={`/evento/${eventoId}/pantalla`} target="_blank" className="boton-secundario">
@@ -149,7 +154,7 @@ export default function PanelAdmin({
       </header>
 
       {mensajeError && (
-        <p role="alert" className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p role="alert" className="alerta mb-4">
           {mensajeError}
         </p>
       )}
@@ -166,7 +171,7 @@ export default function PanelAdmin({
           <TarjetaQR eventoId={eventoId} baseUrl={baseUrl} />
 
           <section className="tarjeta">
-            <h2 className="text-lg font-semibold text-slate-900">Hacer un sorteo</h2>
+            <h2 className="text-lg font-semibold text-foreground">Hacer un sorteo</h2>
 
             <div className="mt-4 space-y-4">
               <div>
@@ -201,7 +206,7 @@ export default function PanelAdmin({
                       key={n}
                       type="button"
                       onClick={() => setCantidad(n)}
-                      className="rounded-lg bg-slate-100 px-3 py-1 text-sm text-slate-700 hover:bg-slate-200"
+                      className="rounded-lg border border-linea bg-superficie-alta px-3 py-1 text-sm text-neutral-300 transition hover:border-acento hover:text-acento"
                     >
                       {n}
                     </button>
@@ -209,22 +214,22 @@ export default function PanelAdmin({
                 </div>
               </div>
 
-              <label className="flex items-center gap-2 text-sm text-slate-700">
+              <label className="flex items-center gap-2 text-sm text-neutral-300">
                 <input
                   type="checkbox"
                   checked={excluirGanadores}
                   onChange={(e) => setExcluirGanadores(e.target.checked)}
-                  className="h-4 w-4 rounded border-slate-300"
+                  className="h-4 w-4 rounded border-linea accent-acento-fuerte"
                 />
                 No repetir personas que ya ganaron
               </label>
 
-              <label className="flex items-center gap-2 text-sm text-slate-700">
+              <label className="flex items-center gap-2 text-sm text-neutral-300">
                 <input
                   type="checkbox"
                   checked={soloUltimaHora}
                   onChange={(e) => setSoloUltimaHora(e.target.checked)}
-                  className="h-4 w-4 rounded border-slate-300"
+                  className="h-4 w-4 rounded border-linea accent-acento-fuerte"
                 />
                 Solo entre los registrados en la última hora
               </label>
@@ -242,7 +247,7 @@ export default function PanelAdmin({
                   type="button"
                   onClick={() => sortear("final")}
                   disabled={sorteando || stats.total === 0}
-                  className="boton bg-amber-500 hover:bg-amber-600 focus-visible:outline-amber-500"
+                  className="boton bg-amber-500 text-neutral-950 hover:bg-amber-400 focus-visible:outline-amber-500"
                 >
                   Sorteo final
                 </button>
@@ -253,30 +258,30 @@ export default function PanelAdmin({
 
         <div className="space-y-6">
           <section className="tarjeta">
-            <h2 className="text-lg font-semibold text-slate-900">Historial de sorteos</h2>
+            <h2 className="text-lg font-semibold text-foreground">Historial de sorteos</h2>
             {sorteos.length === 0 ? (
-              <p className="mt-3 text-sm text-slate-500">Todavía no se hizo ningún sorteo.</p>
+              <p className="mt-3 text-sm text-tenue">Todavía no se hizo ningún sorteo.</p>
             ) : (
               <ul className="mt-4 space-y-4">
                 {sorteos.map((sorteo) => (
-                  <li key={sorteo.id} className="rounded-xl border border-slate-200 p-4">
+                  <li key={sorteo.id} className="rounded-xl border border-linea p-4">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <h3 className="font-semibold text-slate-900">
+                      <h3 className="font-semibold text-foreground">
                         {sorteo.titulo}
                         {sorteo.tipo === "final" && (
-                          <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                          <span className="ml-2 rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-medium text-amber-300">
                             final
                           </span>
                         )}
                       </h3>
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-tenue">
                         {formatearFechaHora(sorteo.created_at)}
                       </span>
                     </div>
                     <ol className="mt-3 grid gap-1 sm:grid-cols-2">
                       {sorteo.ganadores.map((g) => (
-                        <li key={g.posicion} className="text-sm text-slate-700">
-                          <span className="mr-2 font-mono text-xs text-slate-400">
+                        <li key={g.posicion} className="text-sm text-neutral-300">
+                          <span className="mr-2 font-mono text-xs text-neutral-500">
                             {String(g.posicion).padStart(2, "0")}
                           </span>
                           {g.participante
@@ -293,18 +298,18 @@ export default function PanelAdmin({
 
           <section className="tarjeta">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">Participantes</h2>
-              <span className="text-sm text-slate-500">se actualiza solo</span>
+              <h2 className="text-lg font-semibold text-foreground">Participantes</h2>
+              <span className="text-sm text-tenue">se actualiza solo</span>
             </div>
 
             {participantes.length === 0 ? (
-              <p className="mt-3 text-sm text-slate-500">
+              <p className="mt-3 text-sm text-tenue">
                 {isLoading ? "Cargando…" : "Todavía nadie se registró."}
               </p>
             ) : (
               <div className="mt-4 max-h-[420px] overflow-y-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="sticky top-0 bg-white text-xs uppercase text-slate-500">
+                  <thead className="sticky top-0 bg-superficie text-xs uppercase text-tenue">
                     <tr>
                       <th className="pb-2">Nombre</th>
                       <th className="pb-2">Cédula</th>
@@ -313,16 +318,16 @@ export default function PanelAdmin({
                       <th className="pb-2">Fecha</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-linea">
                     {participantes.map((p) => (
                       <tr key={p.id}>
-                        <td className="py-2 pr-3 text-slate-900">
+                        <td className="py-2 pr-3 text-foreground">
                           {p.nombre} {p.apellido}
                         </td>
-                        <td className="py-2 pr-3 font-mono text-xs text-slate-600">{p.cedula}</td>
-                        <td className="py-2 pr-3 text-slate-600">{p.telefono}</td>
-                        <td className="py-2 text-slate-500">{formatearHora(p.created_at)}</td>
-                        <td className="py-2 text-slate-500">{formatearFecha(p.created_at)}</td>
+                        <td className="py-2 pr-3 font-mono text-xs text-neutral-400">{p.cedula}</td>
+                        <td className="py-2 pr-3 text-neutral-400">{p.telefono}</td>
+                        <td className="py-2 text-tenue">{formatearHora(p.created_at)}</td>
+                        <td className="py-2 text-tenue">{formatearFecha(p.created_at)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -346,9 +351,9 @@ function Metrica({
   destacado?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p className="text-xs uppercase tracking-wide text-slate-500">{etiqueta}</p>
-      <p className={`mt-1 text-3xl font-bold ${destacado ? "text-orange-600" : "text-slate-900"}`}>
+    <div className="rounded-2xl border border-linea bg-superficie p-4 shadow-lg shadow-black/40">
+      <p className="text-xs uppercase tracking-wide text-tenue">{etiqueta}</p>
+      <p className={`mt-1 text-3xl font-bold ${destacado ? "text-acento" : "text-foreground"}`}>
         {valor}
       </p>
     </div>

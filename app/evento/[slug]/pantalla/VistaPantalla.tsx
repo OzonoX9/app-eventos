@@ -20,14 +20,14 @@ export default function VistaPantalla({ eventoId }: { eventoId: string }) {
   const sorteo = data?.sorteos?.[0];
 
   if (isLoading) {
-    return <p className="text-2xl text-slate-400">Cargando…</p>;
+    return <p className="text-2xl text-tenue">Cargando…</p>;
   }
 
   if (!sorteo) {
     return (
       <div className="text-center">
-        <p className="text-4xl font-bold text-white">Escaneá el QR para participar</p>
-        <p className="mt-4 text-2xl text-slate-400">El primer sorteo está por comenzar</p>
+        <p className="text-4xl font-bold text-foreground">Escaneá el QR para participar</p>
+        <p className="mt-4 text-2xl text-tenue">El primer sorteo está por comenzar</p>
       </div>
     );
   }
@@ -36,10 +36,10 @@ export default function VistaPantalla({ eventoId }: { eventoId: string }) {
 
   return (
     <div className="w-full text-center">
-      <p className="text-xl uppercase tracking-[0.2em] text-orange-400">
+      <p className="text-xl uppercase tracking-[0.2em] text-acento">
         {formatearHora(sorteo.created_at)}
       </p>
-      <h1 className="mt-2 text-5xl font-black text-white sm:text-6xl">{sorteo.titulo}</h1>
+      <h1 className="mt-2 text-5xl font-black text-foreground sm:text-6xl">{sorteo.titulo}</h1>
 
       <ul
         className={`mx-auto mt-10 grid max-w-6xl gap-4 ${
@@ -49,12 +49,12 @@ export default function VistaPantalla({ eventoId }: { eventoId: string }) {
         {sorteo.ganadores.map((g) => (
           <li
             key={g.posicion}
-            className="rounded-2xl bg-white/10 px-6 py-5 ring-1 ring-white/15 backdrop-blur"
+            className="rounded-2xl bg-superficie px-6 py-5 ring-1 ring-linea"
           >
-            <p className={`font-bold text-white ${muchos ? "text-2xl" : "text-4xl"}`}>
+            <p className={`font-bold text-foreground ${muchos ? "text-2xl" : "text-4xl"}`}>
               {g.participante ? `${g.participante.nombre} ${g.participante.apellido}` : "—"}
             </p>
-            <p className="mt-1 font-mono text-sm text-orange-200">{g.participante?.cedula ?? ""}</p>
+            <p className="mt-1 font-mono text-sm text-acento">{g.participante?.cedula ?? ""}</p>
           </li>
         ))}
       </ul>

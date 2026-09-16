@@ -37,16 +37,18 @@ export default function TarjetaQR({
 
   return (
     <section className="tarjeta">
-      <h2 className="text-lg font-semibold text-slate-900">QR de ingreso</h2>
-      <p className="mt-1 text-sm text-slate-600">
+      <h2 className="text-lg font-semibold text-foreground">QR de ingreso</h2>
+      <p className="mt-1 text-sm text-tenue">
         Imprimilo y ponelo en la entrada. Un solo QR para todo el evento.
       </p>
 
+      {/* El QR queda sobre blanco a propósito: invertirlo baja la tasa de
+          lectura de varias cámaras y además se imprime para pegar en la entrada. */}
       <div ref={contenedor} className="mt-4 flex justify-center rounded-xl bg-white p-4">
         <QRCodeCanvas value={url} size={220} level="M" marginSize={2} />
       </div>
 
-      <p className="mt-3 break-all text-center font-mono text-xs text-slate-500">{url}</p>
+      <p className="mt-3 break-all text-center font-mono text-xs text-tenue">{url}</p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-2">
         <button type="button" onClick={descargar} className="boton-secundario">

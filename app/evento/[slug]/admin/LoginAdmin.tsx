@@ -34,8 +34,8 @@ export default function LoginAdmin() {
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-4 py-16">
       <form onSubmit={enviar} className="tarjeta space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">Panel del evento</h1>
-          <p className="mt-1 text-sm text-slate-600">Ingresá la contraseña de administración.</p>
+          <h1 className="text-xl font-bold text-foreground">Panel del evento</h1>
+          <p className="mt-1 text-sm text-tenue">Ingresá la contraseña de administración.</p>
         </div>
 
         <div>
@@ -53,7 +53,7 @@ export default function LoginAdmin() {
         </div>
 
         {error && (
-          <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p role="alert" className="alerta">
             {error}
           </p>
         )}

@@ -91,11 +91,11 @@ export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
   if (listo) {
     return (
       <div className="tarjeta text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 text-3xl ring-1 ring-emerald-500/30">
           🎉
         </div>
-        <h2 className="text-2xl font-bold text-slate-900">¡Estás participando!</h2>
-        <p className="mt-2 text-slate-600">
+        <h2 className="text-2xl font-bold text-foreground">¡Estás participando!</h2>
+        <p className="mt-2 text-tenue">
           Tu registro quedó confirmado. Cada hora sorteamos premios entre los participantes
           registrados, y al final hacemos el gran sorteo. Quedate atento a las pantallas.
         </p>
@@ -135,7 +135,7 @@ export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
             className={`campo ${errores[campo.name] ? "campo-error" : ""}`}
           />
           {errores[campo.name] && (
-            <p id={`${campo.name}-error`} className="mt-1 text-sm text-red-600">
+            <p id={`${campo.name}-error`} className="mt-1 text-sm text-red-400">
               {errores[campo.name]}
             </p>
           )}
@@ -143,7 +143,7 @@ export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
       ))}
 
       {errorGeneral && (
-        <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p role="alert" className="alerta">
           {errorGeneral}
         </p>
       )}
@@ -152,7 +152,7 @@ export default function FormularioRegistro({ eventoId }: { eventoId: string }) {
         {enviando ? "Registrando…" : "Participar en los sorteos"}
       </button>
 
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-tenue">
         Usamos tus datos únicamente para contactarte si ganás un premio.
       </p>
     </form>
