@@ -1,20 +1,18 @@
 {
-  "name": "app-eventos",
+  "name": "natsumatsuri-2026",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.115.0",
     "next": "16.3.4",
-    "qrcode.react": "^4.2.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "swr": "^2.5.1"
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

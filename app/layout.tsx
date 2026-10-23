@@ -1,38 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { ReactNode } from "react";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Registro y Sorteos",
-  description: "Registro de participantes por QR y sorteos en vivo para eventos",
+  title: "Natsumatsuri 2026 — 14 de noviembre · Pirapó",
+  description: "Nos encontramos en Natsumatsuri 2026. Sábado 14 de noviembre desde las 18:00 en la Cancha de la Asociación Japonesa de Pirapó, Itapúa, Paraguay.",
+  openGraph: {
+    title: "Natsumatsuri 2026 — Nos vemos en Pirapó",
+    description: "14 de noviembre · 18:00 h · Cancha de la Asociación Japonesa de Pirapó. Una noche para encontrarnos, una tradición para compartir.",
+    locale: "es_PY",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0a0a0a",
-  // Hace que los controles nativos (scrollbars, selects, autocompletado)
-  // se dibujen oscuros y no en blanco sobre el tema negro.
-  colorScheme: "dark",
+  themeColor: "#10100f",
+  colorScheme: "dark light",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
-  return (
-    <html
-      lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return <html lang="es"><body>{children}</body></html>;
 }
