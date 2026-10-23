@@ -18,6 +18,8 @@ export default function Home() {
           <a href="#festival">El festival</a>
           <a href="#programa">Programa</a>
           <a href="#ubicacion">Ubicación</a>
+          <a href="#croquis">Croquis</a>
+          <a href="#stands">Stands</a>
         </nav>
         <a className="header-cta" href="/natsumatsuri-2026.ics" download>Guardá la fecha <Arrow /></a>
       </header>
@@ -32,7 +34,7 @@ export default function Home() {
             <div className="hero-copy">
               <p className="hero-location">PIRAPÓ, PARAGUAY</p>
               <h1 id="hero-title"><span className="sr-only">Natsumatsuri 2026</span><span aria-hidden="true">NATSU<br /><span className="title-outline">MATSURI</span><span className="title-period">.</span></span></h1>
-              <p className="hero-description">Una noche para encontrarnos.<br />Una tradición para compartir.</p>
+              <p className="hero-description">{evento.lema}</p>
               <div className="hero-actions">
                 <a className="button button-red" href="/natsumatsuri-2026.ics" download>Nos vemos el 14 de noviembre <Arrow /></a>
                 <a className="text-link" href="#festival">Descubrí el festival <span aria-hidden="true">↓</span></a>
@@ -62,13 +64,25 @@ export default function Home() {
         <section className="festival section-light" id="festival" aria-labelledby="festival-title">
           <div className="section-heading"><span className="eyebrow">01 — EL FESTIVAL</span><span className="small-japanese" aria-hidden="true">つながり</span></div>
           <div className="festival-grid">
-            <h2 id="festival-title">Lo nuestro<br />se vive <em>juntos.</em></h2>
+            <h2 id="festival-title">Japón que<br />nos <em>reúne.</em></h2>
             <div className="festival-copy">
-              <p className="lead">Hay encuentros que se convierten en tradición.</p>
+              <p className="lead">La alegría que nos une!!</p>
               <p>Este 14 de noviembre, Natsumatsuri vuelve a reunirnos en Pirapó. Una invitación a compartir la cultura japonesa, reencontrarnos y ser parte de una misma celebración.</p>
               <p>Reservá la fecha y vení a vivir una noche que se construye entre todos.</p>
               <a className="text-link dark-link" href="#ubicacion">Nuestro punto de encuentro <Arrow /></a>
             </div>
+          </div>
+          <div className="experiences">
+            <h3>Todo lo que te espera en esta gran fiesta!</h3>
+            <ul className="experience-grid">
+              {evento.experiencias.map((experiencia) => (
+                <li key={experiencia.titulo}>
+                  <span className="experience-icon" aria-hidden="true">{experiencia.icono}</span>
+                  <span>{experiencia.titulo}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="festival-invitation">{evento.invitacion} <span aria-hidden="true">❤️🇯🇵</span></p>
           </div>
           <div className="festival-footnote"><span>RAÍCES JAPONESAS.</span><span>ESPÍRITU DE COMUNIDAD.</span><span>UN ENCUENTRO EN PIRAPÓ.</span></div>
         </section>
@@ -107,8 +121,62 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="venue-plan section-dark" id="croquis" aria-labelledby="croquis-title">
+          <div className="section-heading"><span className="eyebrow">04 — CROQUIS DEL EVENTO</span><span className="section-note">TU GUÍA DENTRO DEL FESTIVAL</span></div>
+          <div className="directory-heading">
+            <h2 id="croquis-title">Encontrá tu<br /><span>próximo destino.</span></h2>
+            <p>Un vistazo al espacio donde<br />vamos a compartir la noche.</p>
+          </div>
+          {evento.croquis ? (
+            <figure className="venue-plan-figure">
+              <a href={evento.croquis.src} target="_blank" rel="noopener noreferrer" aria-label="Abrir el croquis del evento en tamaño completo">
+                <Image src={evento.croquis.src} alt={evento.croquis.alt} width={evento.croquis.ancho} height={evento.croquis.alto} sizes="(max-width: 760px) 88vw, 86vw" />
+              </a>
+              <figcaption>Consultá la distribución del evento. <a href={evento.croquis.src} target="_blank" rel="noopener noreferrer">Ver en tamaño completo <Arrow /></a></figcaption>
+            </figure>
+          ) : (
+            <div className="venue-plan-pending">
+              <span className="plan-symbol" aria-hidden="true"><span /><span /><span /><span /></span>
+              <span className="pending-tag">EN PREPARACIÓN</span>
+              <h3>El croquis estará disponible muy pronto.</h3>
+              <p>Acá vas a poder consultar la distribución del recinto y ubicarte dentro del evento.</p>
+            </div>
+          )}
+        </section>
+
+        <section className="stands section-light" id="stands" aria-labelledby="stands-title">
+          <div className="section-heading"><span className="eyebrow">05 — STANDS PRESENTES</span><span className="small-japanese" aria-hidden="true">出会い</span></div>
+          <div className="directory-heading">
+            <h2 id="stands-title">Un paseo.<br /><em>Mil encuentros.</em></h2>
+            <p>Conocé los stands que serán parte<br />de Natsumatsuri 2026.</p>
+          </div>
+          {evento.stands.length > 0 ? (
+            <ul className="stand-list">
+              {evento.stands.map((stand) => (
+                <li key={stand.id} className="stand-card">
+                  <div className="stand-meta"><span>{stand.categoria}</span>{stand.ubicacion && <span>{stand.ubicacion}</span>}</div>
+                  <h3>{stand.nombre}</h3>
+                  {stand.descripcion && <p>{stand.descripcion}</p>}
+                  {stand.instagram && <a className="text-link dark-link" href={stand.instagram} target="_blank" rel="noopener noreferrer">Ver en Instagram <Arrow /></a>}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="stands-pending">
+              <span className="stand-symbol" aria-hidden="true">＋</span>
+              <div><h3>Estamos preparando la lista de stands.</h3><p>Los nombres y las propuestas se anunciarán acá cuando estén confirmados.</p></div>
+              <span className="pending-tag">PRÓXIMAMENTE</span>
+            </div>
+          )}
+          <a className="text-link dark-link stands-plan-link" href="#croquis">Consultá el croquis del evento <span aria-hidden="true">↑</span></a>
+        </section>
+
         <section className="sponsors section-dark" id="patrocinadores" aria-labelledby="sponsors-title">
-          <div className="section-heading"><span className="eyebrow">04 — QUIENES HACEN POSIBLE EL ENCUENTRO</span></div>
+          <div className="section-heading"><span className="eyebrow">06 — QUIENES HACEN POSIBLE EL ENCUENTRO</span></div>
+          <div className="organizer">
+            <div><span className="eyebrow">ORGANIZA</span><h3>{evento.organizador.nombre}</h3></div>
+            <a href={evento.organizador.url} target="_blank" rel="noopener noreferrer" className="organizer-instagram"><span>SEGUÍ LAS NOVEDADES EN INSTAGRAM<strong>@{evento.organizador.instagram}</strong></span><Arrow /></a>
+          </div>
           <div className="sponsors-heading"><h2 id="sponsors-title">Una celebración.<br /><span>Muchas manos.</span></h2><p>Un espacio para reconocer a quienes<br />acompañan Natsumatsuri 2026.</p></div>
           {evento.patrocinadores.length > 0 ? (
             <ul className="sponsor-list">{evento.patrocinadores.map((p) => (
@@ -127,7 +195,7 @@ export default function Home() {
 
       <footer className="site-footer">
         <a className="footer-wordmark" href="#inicio">NATSUMATSURI<span>2026</span></a>
-        <div><p>{evento.lugar}</p><p>{evento.ciudad}</p></div>
+        <div><p>Organiza: {evento.organizador.nombre}</p><p><a href={evento.organizador.url} target="_blank" rel="noopener noreferrer">@{evento.organizador.instagram} <Arrow /></a></p><p>{evento.lugar}</p><p>{evento.ciudad}</p></div>
         <a className="back-top" href="#inicio">VOLVER ARRIBA <span aria-hidden="true">↑</span></a>
       </footer>
     </>

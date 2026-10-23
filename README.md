@@ -12,7 +12,7 @@ Se recomienda Node.js 24 LTS (Node.js 23 del entorno actual genera una advertenc
 
 ## Contenido
 
-- `lib/evento.ts`: información del evento, programa y patrocinadores.
+- `lib/evento.ts`: información del evento, organizador, Instagram, experiencias, croquis, stands, programa y patrocinadores.
 - `app/page.tsx`: estructura y textos editoriales.
 - `app/globals.css`: diseño responsive, paleta y animación con soporte para movimiento reducido.
 - `public/brand/koi.png`: koi derivado del logo facilitado, sin modificar los originales. Se aisló su color para retirar la tipografía de 2025; el nombre y 2026 se muestran como texto.
@@ -21,9 +21,19 @@ Se recomienda Node.js 24 LTS (Node.js 23 del entorno actual genera una advertenc
 
 El programa detallado y los patrocinadores se muestran como pendientes hasta disponer de información confirmada. El enlace de ubicación abre una búsqueda del recinto en Google Maps, no un pin de coordenadas verificadas. El dibujo de ubicación es ilustrativo.
 
+### Croquis y stands
+
+El croquis y la lista de stands tienen secciones propias con avisos de información pendiente. No se muestran puestos ni distribuciones ficticias.
+
+Para incorporar el croquis, guardar la imagen en `public/` y completar `evento.croquis` en `lib/evento.ts` con `src` (ruta pública), `alt` (descripción accesible), `ancho` y `alto` (dimensiones reales). La imagen se adapta al ancho disponible y puede abrirse en tamaño completo. Mantener `null` hasta tener el recurso definitivo.
+
+Para incorporar stands, completar `evento.stands` con `id` único, `nombre` y `categoria`. Cada stand admite también `descripcion`, `ubicacion` (referencia al croquis) e `instagram` (URL completa). Mantener el array vacío hasta confirmar los participantes.
+
+El organizador es Nikkai Seinen Pirapó y su enlace oficial es https://www.instagram.com/nikkaiseinen_pirapo/. El perfil se enlaza sin cargar contenido ni rastreadores de Instagram en la página.
+
 ## Validación
 
-`npm run lint`, `npm run typecheck`, `npm run build`.
+`npm test`, `npm run lint`, `npm run typecheck`, `npm run build`. Las pruebas cubren el contenido de Instagram, los estados pendientes, el croquis y los stands con datos de prueba y los enlaces internos.
 
 ## Vercel
 
