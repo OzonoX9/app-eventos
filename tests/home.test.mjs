@@ -47,6 +47,39 @@ test("muestra las dos secciones pendientes sin inventar stands ni un croquis", (
   assert.ok(!html.includes('class="venue-plan-figure"'));
 });
 
+test("la lista provisional incluye cinco stands con su color y nueve alquileres por definir", () => {
+  const identificados = evento.stands.filter((stand) => !stand.pendiente);
+  const alquileres = evento.stands.filter((stand) => stand.pendiente);
+  assert.equal(identificados.length, 5);
+  assert.equal(alquileres.length, 9);
+  assert.equal(new Set(evento.stands.map((stand) => stand.id)).size, 14);
+  const colores = {
+    "Pirapó Km 23": "amarillo",
+    "Pirapó Centro": "verde",
+    "Pirapó Km 13": "rojo",
+    Acacaraya: "blanco",
+    "Ca'arendy": "morado",
+  };
+  for (const stand of identificados) {
+    assert.equal(stand.color, colores[stand.nombre]);
+    assert.ok(stand.ubicacion);
+    assert.equal(stand.descripcion, undefined);
+  }
+  for (const stand of alquileres) {
+    assert.equal(stand.color, undefined);
+    assert.equal(stand.ubicacion, undefined);
+    assert.equal(stand.descripcion, undefined);
+  }
+  const html = renderizar();
+  assert.equal([...html.matchAll(/class="stand-card"/g)].length, 14);
+  assert.equal([...html.matchAll(/class="stand-pending-tag"/g)].length, 9);
+  assert.equal([...html.matchAll(/Color en el croquis:/g)].length, 5);
+  assert.match(html, /LISTADO PROVISIONAL/);
+  assert.match(html, /Los menús de los distintos stands todavía no están disponibles/);
+  assert.match(html, /no indica una posición en el croquis/);
+  assert.match(html, /Stand de alquiler 09/);
+});
+
 test("incluye el texto de Instagram, las cuatro propuestas y el organizador", () => {
   const html = renderizar();
   assert.ok(html.includes(evento.lema));

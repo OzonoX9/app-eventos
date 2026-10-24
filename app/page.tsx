@@ -148,19 +148,29 @@ export default function Home() {
           <div className="section-heading"><span className="eyebrow">05 — STANDS PRESENTES</span><span className="small-japanese" aria-hidden="true">出会い</span></div>
           <div className="directory-heading">
             <h2 id="stands-title">Un paseo.<br /><em>Mil encuentros.</em></h2>
-            <p>Conocé los stands que serán parte<br />de Natsumatsuri 2026.</p>
+            <p>Una primera guía de los stands<br />y sus ubicaciones en el croquis.</p>
           </div>
           {evento.stands.length > 0 ? (
+            <>
+            <aside className="stands-notice" aria-label="Información provisional de stands">
+              <span className="eyebrow">LISTADO PROVISIONAL</span>
+              <p>Las referencias de color corresponden al croquis. Los menús de los distintos stands todavía no están disponibles.</p>
+              {evento.stands.some((stand) => stand.pendiente) && <p>Los stands de alquiler tienen sus nombres y propuestas por confirmar. La numeración es solo para esta lista; no indica una posición en el croquis.</p>}
+            </aside>
             <ul className="stand-list">
               {evento.stands.map((stand) => (
                 <li key={stand.id} className="stand-card">
-                  <div className="stand-meta"><span>{stand.categoria}</span>{stand.ubicacion && <span>{stand.ubicacion}</span>}</div>
+                  <div className="stand-meta"><span>{stand.categoria}</span>{stand.pendiente && <span className="stand-pending-tag">POR DEFINIR</span>}</div>
                   <h3>{stand.nombre}</h3>
+                  {stand.color && <p className="stand-color-label"><span className={`stand-color stand-color-${stand.color}`} aria-hidden="true" /><span>Color en el croquis: <strong>{stand.color}</strong></span></p>}
+                  {stand.ubicacion && <p className="stand-location">{stand.ubicacion}</p>}
+                  {stand.pendiente && <p>Ocupante y ubicación individual por confirmar.</p>}
                   {stand.descripcion && <p>{stand.descripcion}</p>}
                   {stand.instagram && <a className="text-link dark-link" href={stand.instagram} target="_blank" rel="noopener noreferrer">Ver en Instagram <Arrow /></a>}
                 </li>
               ))}
             </ul>
+            </>
           ) : (
             <div className="stands-pending">
               <span className="stand-symbol" aria-hidden="true">＋</span>

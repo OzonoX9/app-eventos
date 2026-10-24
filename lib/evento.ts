@@ -8,6 +8,8 @@ export type Stand = {
   descripcion?: string;
   ubicacion?: string;
   instagram?: string;
+  color?: "amarillo" | "verde" | "rojo" | "blanco" | "morado";
+  pendiente?: boolean;
 };
 
 type Evento = {
@@ -57,7 +59,49 @@ export const evento: Evento = {
     ancho: 1080,
     alto: 1350,
   },
-  stands: [],
+  stands: [
+    {
+      id: "pirapo-km-23",
+      nombre: "Pirapó Km 23",
+      categoria: "Stand identificado",
+      color: "amarillo",
+      ubicacion: "Sector derecho del croquis, debajo del Acceso 1 y encima de Acacaraya.",
+    },
+    {
+      id: "pirapo-centro",
+      nombre: "Pirapó Centro",
+      categoria: "Stand identificado",
+      color: "verde",
+      ubicacion: "Sector superior derecho del croquis, debajo de los stands de alquiler y encima de Ca'arendy.",
+    },
+    {
+      id: "pirapo-km-13",
+      nombre: "Pirapó Km 13",
+      categoria: "Stand identificado",
+      color: "rojo",
+      ubicacion: "Sector inferior del croquis, entre la degustación de sake y Acacaraya.",
+    },
+    {
+      id: "acacaraya",
+      nombre: "Acacaraya",
+      categoria: "Stand identificado",
+      color: "blanco",
+      ubicacion: "Sector inferior derecho del croquis, debajo de Pirapó Km 23.",
+    },
+    {
+      id: "caarendy",
+      nombre: "Ca'arendy",
+      categoria: "Stand identificado",
+      color: "morado",
+      ubicacion: "Sector derecho del croquis, entre Pirapó Centro y el Acceso 1.",
+    },
+    ...Array.from({ length: 9 }, (_, indice): Stand => ({
+      id: `alquiler-${indice + 1}`,
+      nombre: `Stand de alquiler ${String(indice + 1).padStart(2, "0")}`,
+      categoria: "Stand de alquiler",
+      pendiente: true,
+    })),
+  ],
   programa: [
     {
       hora: "18:00",
