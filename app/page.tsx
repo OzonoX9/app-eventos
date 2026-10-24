@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import HomePanels from "@/app/components/HomePanels";
 import { evento } from "@/lib/evento";
 
 function Arrow() {
@@ -8,7 +9,7 @@ function Arrow() {
 
 export default function Home() {
   return (
-    <>
+    <HomePanels header={<>
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <header className="site-header">
         <a href="#inicio" className="brand" aria-label="Natsumatsuri 2026, inicio">
@@ -24,8 +25,9 @@ export default function Home() {
         </nav>
         <a className="header-cta" href="/natsumatsuri-2026.ics" download>Guardá la fecha <Arrow /></a>
       </header>
-
-      <main id="contenido">
+      </>}>
+      <main id="contenido" className="home-panels" tabIndex={-1}>
+        <div className="home-panel-group" data-panel="inicio">
         <section className="hero" id="inicio" aria-labelledby="hero-title">
           <div className="hero-topline">
             <span className="eyebrow"><i /> TRADICIÓN QUE NOS ENCUENTRA</span>
@@ -62,7 +64,8 @@ export default function Home() {
           <a href={evento.mapa} target="_blank" rel="noopener noreferrer" className="date-arrow" aria-label="Buscar la ubicación en Google Maps"><Arrow /></a>
         </section>
 
-        <section className="festival section-light" id="festival" aria-labelledby="festival-title">
+        </div>
+        <section className="festival section-light" id="festival" data-panel="festival" aria-labelledby="festival-title">
           <div className="section-heading"><span className="eyebrow">01 — EL FESTIVAL</span><span className="small-japanese" aria-hidden="true">つながり</span></div>
           <div className="festival-grid">
             <h2 id="festival-title">Japón que<br />nos <em>reúne.</em></h2>
@@ -88,7 +91,7 @@ export default function Home() {
           <div className="festival-footnote"><span>RAÍCES JAPONESAS.</span><span>ESPÍRITU DE COMUNIDAD.</span><span>UN ENCUENTRO EN PIRAPÓ.</span></div>
         </section>
 
-        <section className="program section-dark" id="programa" aria-labelledby="program-title">
+        <section className="program section-dark" id="programa" data-panel="programa" aria-labelledby="program-title">
           <div className="section-heading"><span className="eyebrow">02 — LA NOCHE</span><span className="section-note">14.11.2026 / PIRAPÓ</span></div>
           <div className="program-heading"><h2 id="program-title">Una fecha.<br /><span>Todo por vivir.</span></h2><p>El encuentro ya tiene día y hora.<br />El programa completo, muy pronto.</p></div>
           <div className="schedule">
@@ -103,7 +106,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="location section-light" id="ubicacion" aria-labelledby="location-title">
+        <section className="location section-light" id="ubicacion" data-panel="ubicacion" aria-labelledby="location-title">
           <div className="section-heading"><span className="eyebrow">03 — EL PUNTO DE ENCUENTRO</span><span className="small-japanese" aria-hidden="true">ここで会おう</span></div>
           <div className="location-grid">
             <div>
@@ -122,7 +125,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="venue-plan section-dark" id="croquis" aria-labelledby="croquis-title">
+        <section className="venue-plan section-dark" id="croquis" data-panel="croquis" aria-labelledby="croquis-title">
           <div className="section-heading"><span className="eyebrow">04 — CROQUIS DEL EVENTO</span><span className="section-note">TU GUÍA DENTRO DEL FESTIVAL</span></div>
           <div className="directory-heading">
             <h2 id="croquis-title">Encontrá tu<br /><span>próximo destino.</span></h2>
@@ -149,7 +152,7 @@ export default function Home() {
           )}
         </section>
 
-        <section className="stands section-light" id="stands" aria-labelledby="stands-title">
+        <section className="stands section-light" id="stands" data-panel="stands" aria-labelledby="stands-title">
           <div className="section-heading"><span className="eyebrow">05 — STANDS PRESENTES</span><span className="small-japanese" aria-hidden="true">出会い</span></div>
           <div className="directory-heading">
             <h2 id="stands-title">Un paseo.<br /><em>Mil encuentros.</em></h2>
@@ -186,6 +189,7 @@ export default function Home() {
           <a className="text-link dark-link stands-plan-link" href="#croquis">Consultá el croquis del evento <span aria-hidden="true">↑</span></a>
         </section>
 
+        <div className="home-panel-group" data-panel="patrocinadores">
         <section className="sponsors section-dark" id="patrocinadores" aria-labelledby="sponsors-title">
           <div className="section-heading"><span className="eyebrow">06 — QUIENES HACEN POSIBLE EL ENCUENTRO</span></div>
           <div className="organizer">
@@ -206,13 +210,13 @@ export default function Home() {
           <a href="/natsumatsuri-2026.ics" download className="button button-light">Guardá Natsumatsuri en tu calendario <Arrow /></a>
           <span className="closing-japanese" aria-hidden="true">夏祭り</span>
         </section>
-      </main>
-
       <footer className="site-footer">
         <a className="footer-wordmark" href="#inicio">NATSUMATSURI<span>2026</span></a>
         <div><p>Organiza: {evento.organizador.nombre}</p><p><a href={evento.organizador.url} target="_blank" rel="noopener noreferrer">@{evento.organizador.instagram} <Arrow /></a></p><p>{evento.lugar}</p><p>{evento.ciudad}</p></div>
         <a className="back-top" href="#inicio">VOLVER ARRIBA <span aria-hidden="true">↑</span></a>
       </footer>
-    </>
+        </div>
+      </main>
+    </HomePanels>
   );
 }

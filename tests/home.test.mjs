@@ -24,10 +24,12 @@ function cargarModulo(ruta, dependencias = {}) {
 }
 
 const { evento, obtenerStandsDelMapa } = cargarModulo("../lib/evento.ts");
+const { default: HomePanels, PANELES } = cargarModulo("../app/components/HomePanels.tsx");
 
 function renderizar(configuracion = evento) {
   const { default: Home } = cargarModulo("../app/page.tsx", {
     "@/lib/evento": { evento: configuracion },
+    "@/app/components/HomePanels": { default: HomePanels },
     "next/image": {
       __esModule: true,
       default: ({ src, alt, width, height, sizes, className }) =>
@@ -118,6 +120,20 @@ test("presenta el croquis y los stands cuando se cargan datos confirmados", () =
   assert.match(html, /Stand de prueba mínimo/);
   assert.ok(!html.includes("El croquis estará disponible muy pronto"));
   assert.ok(!html.includes("Estamos preparando la lista de stands"));
+});
+
+test("la portada tiene siete paneles y conserva fecha, cierre y pie de página", () => {
+  const html = renderizar();
+  const ids = [...html.matchAll(/data-panel="([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(ids.length, 7);
+  assert.equal(ids.join(","), Array.from(PANELES, (p) => p.id).join(","));
+  assert.match(html, /aria-label="Secciones de la portada"/);
+  assert.match(html, /aria-label="Sección anterior"/);
+  assert.match(html, /aria-label="Sección siguiente"/);
+  assert.match(html, /Deslizá para cambiar de sección/);
+  assert.match(html, /class="date-band"/);
+  assert.match(html, /class="closing"/);
+  assert.match(html, /class="site-footer"/);
 });
 
 test("todos los enlaces internos apuntan a un identificador existente", () => {

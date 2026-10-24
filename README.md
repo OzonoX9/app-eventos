@@ -21,6 +21,12 @@ Se recomienda Node.js 24 LTS (Node.js 23 del entorno actual genera una advertenc
 
 El programa detallado y los patrocinadores se muestran como pendientes hasta disponer de información confirmada. El enlace de ubicación abre una búsqueda del recinto en Google Maps, no un pin de coordenadas verificadas. El dibujo de ubicación es ilustrativo.
 
+### Navegación de la portada
+
+En pantallas de hasta 760 px, solo la portada usa siete paneles horizontales con CSS Scroll Snap. Se puede navegar deslizando, desde el menú compacto o con anterior/siguiente. Cada panel largo tiene scroll vertical propio; el último incluye organizadores, cierre y pie de página. Las anclas existentes y el historial siguen funcionando.
+
+`app/components/HomePanels.tsx` sincroniza el panel visible con el menú y la URL; el contenido sigue renderizado en servidor. Las reglas están acotadas a `.home-page`. En escritorio se conserva el flujo vertical. `/mapa` y `/stands/[id]` no usan el contenedor de paneles.
+
 ### Croquis y stands
 
 El croquis y la lista de stands tienen secciones propias. Se muestra el plano facilitado y una lista provisional de cinco stands identificados por color y nueve puestos de alquiler por definir.
