@@ -94,3 +94,16 @@ test("todos los enlaces internos apuntan a un identificador existente", () => {
     assert.ok(ids.has(target), `Ancla inexistente: ${target}`);
   }
 });
+
+test("el croquis publicado existe y conserva sus dimensiones y enlace a tamaño completo", () => {
+  assert.ok(evento.croquis);
+  const imagen = readFileSync(new URL(`../public${evento.croquis.src}`, import.meta.url));
+  assert.equal(imagen.subarray(1, 4).toString(), "PNG");
+  assert.equal(imagen.readUInt32BE(16), evento.croquis.ancho);
+  assert.equal(imagen.readUInt32BE(20), evento.croquis.alto);
+  const html = renderizar();
+  assert.ok(html.includes(`src="${evento.croquis.src}"`));
+  assert.ok(html.includes(`href="${evento.croquis.src}"`));
+  assert.ok(html.includes(evento.croquis.alt));
+  assert.ok(!html.includes("El croquis estará disponible muy pronto"));
+});

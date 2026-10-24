@@ -51,7 +51,12 @@ export const evento: Evento = {
     instagram: "nikkaiseinen_pirapo",
     url: "https://www.instagram.com/nikkaiseinen_pirapo/",
   },
-  croquis: null,
+  croquis: {
+    src: "/croquis-natsumatsuri-2026.png",
+    alt: "Croquis de Natsumatsuri 2026: accesos desde Av. Paraguay - Japón, escenario, zona de juegos, stands, cantina de bebidas, degustación de sake y sanitarios.",
+    ancho: 1080,
+    alto: 1350,
+  },
   stands: [],
   programa: [
     {
