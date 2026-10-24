@@ -8,6 +8,7 @@ function Arrow() {
 }
 
 export default function Home() {
+  const stands = evento.stands.filter((stand) => !stand.pendiente);
   return (
     <HomePanels header={<>
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
@@ -17,11 +18,12 @@ export default function Home() {
           <span>NATSUMATSURI<small>PIRAPÓ · {evento.edicion}</small></span>
         </a>
         <nav aria-label="Navegación principal">
-          <a href="#festival">El festival</a>
-          <a href="#programa">Programa</a>
           <a href="#ubicacion">Ubicación</a>
           <a href="#croquis">Croquis</a>
           <a href="#stands">Stands</a>
+          <a href="#programa">Cronograma</a>
+          <a href="#patrocinadores">Auspiciantes</a>
+          <a href="#organizador">Organizador</a>
         </nav>
         <a className="header-cta" href="/natsumatsuri-2026.ics" download>Guardá la fecha <Arrow /></a>
       </header>
@@ -40,7 +42,7 @@ export default function Home() {
               <p className="hero-description">{evento.lema}</p>
               <div className="hero-actions">
                 <a className="button button-red" href="/natsumatsuri-2026.ics" download>Nos vemos el 14 de noviembre <Arrow /></a>
-                <a className="text-link" href="#festival">Descubrí el festival <span aria-hidden="true">↓</span></a>
+                <a className="text-link" href="#ubicacion">Ubicación del evento <span aria-hidden="true">↓</span></a>
               </div>
             </div>
             <div className="hero-art">
@@ -54,7 +56,7 @@ export default function Home() {
               <span className="art-caption">EL ESPÍRITU DEL ENCUENTRO</span>
             </div>
           </div>
-          <div className="hero-bottom"><span>UN ENCUENTRO. MUCHAS HISTORIAS.</span><a href="#festival">SEGUÍ EXPLORANDO <span aria-hidden="true">↓</span></a></div>
+          <div className="hero-bottom"><span>UN ENCUENTRO. MUCHAS HISTORIAS.</span><a href="#ubicacion">SEGUÍ EXPLORANDO <span aria-hidden="true">↓</span></a></div>
         </section>
 
         <section className="date-band" aria-label="Fecha y lugar del evento">
@@ -63,9 +65,9 @@ export default function Home() {
           <div className="date-place"><span>NOS ENCONTRAMOS EN</span><p>{evento.lugar}</p></div>
           <a href={evento.mapa} target="_blank" rel="noopener noreferrer" className="date-arrow" aria-label="Buscar la ubicación en Google Maps"><Arrow /></a>
         </section>
-
-        </div>
-        <section className="festival section-light" id="festival" data-panel="festival" aria-labelledby="festival-title">
+          <details className="festival-about" id="festival">
+            <summary>Sobre Natsumatsuri</summary>
+            <div className="festival section-light">
           <div className="section-heading"><span className="eyebrow">01 — EL FESTIVAL</span><span className="small-japanese" aria-hidden="true">つながり</span></div>
           <div className="festival-grid">
             <h2 id="festival-title">Japón que<br />nos <em>reúne.</em></h2>
@@ -89,44 +91,24 @@ export default function Home() {
             <p className="festival-invitation">{evento.invitacion} <span aria-hidden="true">❤️🇯🇵</span></p>
           </div>
           <div className="festival-footnote"><span>RAÍCES JAPONESAS.</span><span>ESPÍRITU DE COMUNIDAD.</span><span>UN ENCUENTRO EN PIRAPÓ.</span></div>
-        </section>
-
-        <section className="program section-dark" id="programa" data-panel="programa" aria-labelledby="program-title">
-          <div className="section-heading"><span className="eyebrow">02 — LA NOCHE</span><span className="section-note">14.11.2026 / PIRAPÓ</span></div>
-          <div className="program-heading"><h2 id="program-title">Una fecha.<br /><span>Todo por vivir.</span></h2><p>El encuentro ya tiene día y hora.<br />El programa completo, muy pronto.</p></div>
-          <div className="schedule">
-            {evento.programa.map((actividad) => (
-              <article className="schedule-row" key={`${actividad.hora}-${actividad.titulo}`}>
-                <time dateTime={evento.inicio}>{actividad.hora}<small> H</small></time>
-                <div><span className="schedule-label">EL ENCUENTRO</span><h3>{actividad.titulo}</h3><p>{actividad.descripcion}</p></div>
-                <span className="schedule-star" aria-hidden="true">✳</span>
-              </article>
-            ))}
-            <div className="schedule-pending"><span className="pending-dot" /><p>Estamos preparando los detalles. Las actividades y sus horarios se anunciarán aquí.</p><span className="pending-tag">PRÓXIMAMENTE</span></div>
-          </div>
-        </section>
+            </div>
+          </details>
+        </div>
 
         <section className="location section-light" id="ubicacion" data-panel="ubicacion" aria-labelledby="location-title">
-          <div className="section-heading"><span className="eyebrow">03 — EL PUNTO DE ENCUENTRO</span><span className="small-japanese" aria-hidden="true">ここで会おう</span></div>
-          <div className="location-grid">
-            <div>
-              <h2 id="location-title">Nos vemos<br />en <em>Pirapó.</em></h2>
-              <p className="location-name">{evento.lugar}</p>
-              <p className="muted-dark">{evento.ciudad}</p>
-              <a href={evento.mapa} target="_blank" rel="noopener noreferrer" className="button button-dark">Buscar cómo llegar <Arrow /></a>
-              <p className="map-note">Se abre una búsqueda del lugar en Google Maps.</p>
-            </div>
-            <div className="location-poster">
-              <div className="poster-top"><span>DESTINO</span><span>PARAGUAY</span></div>
-              <div className="poster-art" aria-hidden="true"><span className="pin-ring" /><span className="pin-core" /><span className="map-line map-line-one" /><span className="map-line map-line-two" /><span className="map-line map-line-three" /></div>
-              <strong>PIRAPÓ<span>ITAPÚA</span></strong>
-              <div className="poster-bottom"><span>14 NOV 2026</span><span>18:00 H ↗</span></div>
-            </div>
+          <div className="section-heading"><span className="eyebrow">02 — UBICACIÓN DEL EVENTO</span></div>
+          <h2 id="location-title">Nos vemos<br />en <em>Pirapó.</em></h2>
+          <div className="location-info">
+            <p className="location-name">{evento.lugar}</p>
+            <p className="muted-dark">{evento.ciudad}</p>
+            <p className="location-date">{evento.fecha} de {evento.edicion} · Desde las {evento.hora} h</p>
+            <a href={evento.mapa} target="_blank" rel="noopener noreferrer" className="button button-dark">Ver ubicación en Google Maps <Arrow /></a>
+            <p className="map-note">El enlace abre la búsqueda del recinto en Google Maps.</p>
           </div>
         </section>
 
         <section className="venue-plan section-dark" id="croquis" data-panel="croquis" aria-labelledby="croquis-title">
-          <div className="section-heading"><span className="eyebrow">04 — CROQUIS DEL EVENTO</span><span className="section-note">TU GUÍA DENTRO DEL FESTIVAL</span></div>
+          <div className="section-heading"><span className="eyebrow">03 — CROQUIS DEL EVENTO</span><span className="section-note">TU GUÍA DENTRO DEL FESTIVAL</span></div>
           <div className="directory-heading">
             <h2 id="croquis-title">Encontrá tu<br /><span>próximo destino.</span></h2>
             <p>Un vistazo al espacio donde<br />vamos a compartir la noche.</p>
@@ -153,57 +135,77 @@ export default function Home() {
         </section>
 
         <section className="stands section-light" id="stands" data-panel="stands" aria-labelledby="stands-title">
-          <div className="section-heading"><span className="eyebrow">05 — STANDS PRESENTES</span><span className="small-japanese" aria-hidden="true">出会い</span></div>
+          <div className="section-heading"><span className="eyebrow">04 — STANDS Y MENÚS</span><span className="small-japanese" aria-hidden="true">出会い</span></div>
           <div className="directory-heading">
-            <h2 id="stands-title">Un paseo.<br /><em>Mil encuentros.</em></h2>
-            <p>Una primera guía de los stands<br />y sus ubicaciones en el croquis.</p>
+            <h2 id="stands-title">Elegí un stand.<br /><em>Descubrí su propuesta.</em></h2>
+            <p>Desplegá cada nombre para ver<br />su ubicación y acceder al flyer o menú.</p>
           </div>
-          {evento.stands.length > 0 ? (
+          {stands.length > 0 ? (
             <>
-            <aside className="stands-notice" aria-label="Información provisional de stands">
-              <span className="eyebrow">LISTADO PROVISIONAL</span>
-              <p>Las referencias de color corresponden al croquis. Los menús de los distintos stands todavía no están disponibles.</p>
-              {evento.stands.some((stand) => stand.pendiente) && <p>Los stands de alquiler tienen sus nombres y propuestas por confirmar. La numeración es solo para esta lista; no indica una posición en el croquis.</p>}
-            </aside>
-            <ul className="stand-list">
-              {evento.stands.map((stand) => (
-                <li key={stand.id} className="stand-card">
-                  <div className="stand-meta"><span>{stand.categoria}</span>{stand.pendiente && <span className="stand-pending-tag">POR DEFINIR</span>}</div>
-                  <h3>{stand.puntoMapa && !stand.pendiente ? <Link href={`/stands/${stand.id}`}>{stand.nombre} <Arrow /></Link> : stand.nombre}</h3>
-                  {stand.color && <p className="stand-color-label"><span className={`stand-color stand-color-${stand.color}`} aria-hidden="true" /><span>Color en el croquis: <strong>{stand.color}</strong></span></p>}
-                  {stand.ubicacion && <p className="stand-location">{stand.ubicacion}</p>}
-                  {stand.pendiente && <p>Ocupante y ubicación individual por confirmar.</p>}
-                  {stand.descripcion && <p>{stand.descripcion}</p>}
-                  {stand.instagram && <a className="text-link dark-link" href={stand.instagram} target="_blank" rel="noopener noreferrer">Ver en Instagram <Arrow /></a>}
-                </li>
-              ))}
-            </ul>
+              <p className="stand-menu-note">Los menús disponibles son de ejemplo, no oficiales. Los flyers y precios definitivos se publicarán cuando estén confirmados.</p>
+              <ul className="stand-accordion">
+                {stands.map((stand) => (
+                  <li key={stand.id}>
+                    <details className="stand-item" name="stands">
+                      <summary>
+                        {stand.color && <span className={`stand-color stand-color-${stand.color}`} aria-hidden="true" />}
+                        <span className="stand-name">{stand.nombre}</span>
+                        <span className="stand-toggle" aria-hidden="true" />
+                      </summary>
+                      <div className="stand-item-content">
+                        {stand.color && <p className="stand-color-label">Color en el croquis: <strong>{stand.color}</strong></p>}
+                        {stand.ubicacion && <p>{stand.ubicacion}</p>}
+                        {stand.descripcion && <p>{stand.descripcion}</p>}
+                        {stand.flyer ? (
+                          <a className="button button-dark" href={stand.flyer} target="_blank" rel="noopener noreferrer">Ver flyer / menú <Arrow /></a>
+                        ) : stand.puntoMapa ? (
+                          <Link className="button button-dark" href={`/stands/${stand.id}`}>Ver flyer / menú de ejemplo <Arrow /></Link>
+                        ) : <p>Menú próximamente.</p>}
+                        {stand.instagram && <a className="text-link dark-link" href={stand.instagram} target="_blank" rel="noopener noreferrer">Ver en Instagram <Arrow /></a>}
+                      </div>
+                    </details>
+                  </li>
+                ))}
+              </ul>
             </>
-          ) : (
-            <div className="stands-pending">
-              <span className="stand-symbol" aria-hidden="true">＋</span>
-              <div><h3>Estamos preparando la lista de stands.</h3><p>Los nombres y las propuestas se anunciarán acá cuando estén confirmados.</p></div>
-              <span className="pending-tag">PRÓXIMAMENTE</span>
-            </div>
-          )}
+          ) : <p className="stand-menu-note">Estamos preparando la lista de stands.</p>}
           <a className="text-link dark-link stands-plan-link" href="#croquis">Consultá el croquis del evento <span aria-hidden="true">↑</span></a>
         </section>
 
-        <div className="home-panel-group" data-panel="patrocinadores">
-        <section className="sponsors section-dark" id="patrocinadores" aria-labelledby="sponsors-title">
-          <div className="section-heading"><span className="eyebrow">06 — QUIENES HACEN POSIBLE EL ENCUENTRO</span></div>
-          <div className="organizer">
-            <div><span className="eyebrow">ORGANIZA</span><h3>{evento.organizador.nombre}</h3></div>
-            <a href={evento.organizador.url} target="_blank" rel="noopener noreferrer" className="organizer-instagram"><span>SEGUÍ LAS NOVEDADES EN INSTAGRAM<strong>@{evento.organizador.instagram}</strong></span><Arrow /></a>
+        <section className="program section-dark" id="programa" data-panel="programa" aria-labelledby="program-title">
+          <div className="section-heading"><span className="eyebrow">05 — CRONOGRAMA DEL EVENTO</span><span className="section-note">14.11.2026 / PIRAPÓ</span></div>
+          <div className="program-heading"><h2 id="program-title">El cronograma<br /><span>de nuestra noche.</span></h2><p>El encuentro ya tiene día y hora.<br />El programa completo, muy pronto.</p></div>
+          <div className="schedule">
+            {evento.programa.map((actividad) => (
+              <article className="schedule-row" key={`${actividad.hora}-${actividad.titulo}`}>
+                <time dateTime={evento.inicio}>{actividad.hora}<small> H</small></time>
+                <div><span className="schedule-label">EL ENCUENTRO</span><h3>{actividad.titulo}</h3><p>{actividad.descripcion}</p></div>
+                <span className="schedule-star" aria-hidden="true">✳</span>
+              </article>
+            ))}
+            <div className="schedule-pending"><span className="pending-dot" /><p>Estamos preparando los detalles. Las actividades y sus horarios se anunciarán aquí.</p><span className="pending-tag">PRÓXIMAMENTE</span></div>
           </div>
+        </section>
+
+        <section className="sponsors section-dark" id="patrocinadores" data-panel="patrocinadores" aria-labelledby="sponsors-title">
+          <div className="section-heading"><span className="eyebrow">06 — AUSPICIANTES</span></div>
           <div className="sponsors-heading"><h2 id="sponsors-title">Una celebración.<br /><span>Muchas manos.</span></h2><p>Un espacio para reconocer a quienes<br />acompañan Natsumatsuri 2026.</p></div>
           {evento.patrocinadores.length > 0 ? (
             <ul className="sponsor-list">{evento.patrocinadores.map((p) => (
               <li key={p.nombre}>{p.url ? <a href={p.url} target="_blank" rel="noopener noreferrer"><Image src={p.logo} alt={p.nombre} width={180} height={90} /></a> : <Image src={p.logo} alt={p.nombre} width={180} height={90} />}</li>
             ))}</ul>
-          ) : <div className="sponsor-pending"><span aria-hidden="true">＋</span><p>Próximamente anunciaremos a nuestros patrocinadores.</p><small>GRACIAS POR SER PARTE.</small></div>}
+          ) : <div className="sponsor-pending"><span aria-hidden="true">＋</span><p>Próximamente anunciaremos a nuestros auspiciantes.</p><small>GRACIAS POR SER PARTE.</small></div>}
         </section>
 
+        <div className="home-panel-group" data-panel="organizador">
+        <section className="section-dark organizer-section" id="organizador" aria-labelledby="organizer-title">
+          <div className="section-heading"><span className="eyebrow">07 — ORGANIZADOR</span></div>
+          <h2 id="organizer-title">El equipo<br /><span>detrás del encuentro.</span></h2>
+          <div className="organizer">
+            <div><span className="eyebrow">ORGANIZA</span><h3>{evento.organizador.nombre}</h3></div>
+            <a href={evento.organizador.url} target="_blank" rel="noopener noreferrer" className="organizer-instagram"><span>SEGUÍ LAS NOVEDADES EN INSTAGRAM<strong>@{evento.organizador.instagram}</strong></span><Arrow /></a>
+          </div>
+        </section>
         <section className="closing" aria-labelledby="closing-title">
           <span className="eyebrow">14 NOVIEMBRE · 18:00 H · PIRAPÓ</span>
           <h2 id="closing-title">La tradición sigue.<br />El encuentro <em>es acá.</em></h2>

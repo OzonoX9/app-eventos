@@ -48,7 +48,7 @@ export default function MapaInteractivo({ croquis, stands }: {
             </li>
           ))}
         </ul>
-        <p className={styles.legendNote}>Solo los stands con nombre tienen menú de muestra. Los nueve alquileres quedan fuera del mapa interactivo.</p>
+        <p className={styles.legendNote}>Elegí un stand con nombre para consultar su menú de muestra.</p>
         <a href={croquis.src} target="_blank" rel="noopener noreferrer" className={styles.originalLink}>Abrir croquis original ↗</a>
       </aside>
     </div>

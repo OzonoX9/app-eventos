@@ -49,37 +49,27 @@ test("muestra las dos secciones pendientes sin inventar stands ni un croquis", (
   assert.ok(!html.includes('class="venue-plan-figure"'));
 });
 
-test("la lista provisional incluye cinco stands con su color y nueve alquileres por definir", () => {
-  const identificados = evento.stands.filter((stand) => !stand.pendiente);
-  const alquileres = evento.stands.filter((stand) => stand.pendiente);
-  assert.equal(identificados.length, 5);
-  assert.equal(alquileres.length, 9);
-  assert.equal(new Set(evento.stands.map((stand) => stand.id)).size, 14);
+test("la portada muestra solo los cinco stands nombrados en una lista colapsable", () => {
+  assert.equal(evento.stands.length, 5);
+  assert.equal(new Set(evento.stands.map((stand) => stand.id)).size, 5);
   const colores = {
-    "Pirapó Km 23": "amarillo",
-    "Pirapó Centro": "verde",
-    "Pirapó Km 13": "rojo",
-    Acacaraya: "blanco",
-    "Ca'arendy": "morado",
+    "Pirapó Km 23": "amarillo", "Pirapó Centro": "verde", "Pirapó Km 13": "rojo",
+    Acacaraya: "blanco", "Ca'arendy": "morado",
   };
-  for (const stand of identificados) {
+  for (const stand of evento.stands) {
     assert.equal(stand.color, colores[stand.nombre]);
     assert.ok(stand.ubicacion);
-    assert.equal(stand.descripcion, undefined);
-  }
-  for (const stand of alquileres) {
-    assert.equal(stand.color, undefined);
-    assert.equal(stand.ubicacion, undefined);
+    assert.ok(!stand.pendiente);
     assert.equal(stand.descripcion, undefined);
   }
   const html = renderizar();
-  assert.equal([...html.matchAll(/class="stand-card"/g)].length, 14);
-  assert.equal([...html.matchAll(/class="stand-pending-tag"/g)].length, 9);
+  assert.equal([...html.matchAll(/<details class="stand-item"/g)].length, 5);
   assert.equal([...html.matchAll(/Color en el croquis:/g)].length, 5);
-  assert.match(html, /LISTADO PROVISIONAL/);
-  assert.match(html, /Los menús de los distintos stands todavía no están disponibles/);
-  assert.match(html, /no indica una posición en el croquis/);
-  assert.match(html, /Stand de alquiler 09/);
+  assert.equal([...html.matchAll(/href="\/stands\//g)].length, 5);
+  assert.ok(!html.includes('class="stand-card"'));
+  assert.ok(!html.includes("Stand de alquiler"));
+  assert.ok(!/<details class="stand-item"[^>]*\sopen/.test(html));
+  assert.match(html, /menús disponibles son de ejemplo, no oficiales/);
 });
 
 test("incluye el texto de Instagram, las cuatro propuestas y el organizador", () => {
@@ -106,6 +96,7 @@ test("presenta el croquis y los stands cuando se cargan datos confirmados", () =
         descripcion: "Descripción de prueba",
         ubicacion: "Puesto 01",
         instagram: "https://www.instagram.com/stand_prueba/",
+        flyer: "/flyers/stand-prueba.png",
       },
       { id: "prueba-minimo", nombre: "Stand de prueba mínimo", categoria: "Otra categoría" },
     ],
@@ -115,6 +106,7 @@ test("presenta el croquis y los stands cuando se cargan datos confirmados", () =
   assert.match(html, /Ver en tamaño completo/);
   assert.match(html, /Stand de prueba completo/);
   assert.match(html, /Descripción de prueba/);
+  assert.match(html, /href="\/flyers\/stand-prueba.png"/);
   assert.match(html, /Puesto 01/);
   assert.match(html, /href="https:\/\/www.instagram.com\/stand_prueba\/"/);
   assert.match(html, /Stand de prueba mínimo/);
@@ -128,9 +120,13 @@ test("la portada tiene siete paneles y conserva fecha, cierre y pie de página",
   assert.equal(ids.length, 7);
   assert.equal(ids.join(","), Array.from(PANELES, (p) => p.id).join(","));
   assert.match(html, /aria-label="Secciones de la portada"/);
-  assert.match(html, /aria-label="Sección anterior"/);
-  assert.match(html, /aria-label="Sección siguiente"/);
-  assert.match(html, /Deslizá para cambiar de sección/);
+  assert.equal(ids.join(","), "inicio,ubicacion,croquis,stands,programa,patrocinadores,organizador");
+  assert.ok(!html.includes('class="panel-controls"'));
+  assert.ok(!html.includes('aria-label="Sección anterior"'));
+  assert.ok(!html.includes('aria-label="Sección siguiente"'));
+  assert.ok(!html.includes("Deslizá para cambiar de sección"));
+  assert.ok(!html.includes('class="location-poster"'));
+  assert.match(html, /Ver ubicación en Google Maps/);
   assert.match(html, /class="date-band"/);
   assert.match(html, /class="closing"/);
   assert.match(html, /class="site-footer"/);

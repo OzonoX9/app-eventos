@@ -205,7 +205,25 @@ h2 em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; color:
 .organizer-instagram > span:last-child { color: var(--orange); font-size: 24px; }
 .organizer-instagram:hover strong, .site-footer > div a:hover { color: var(--orange); }
 .home-page, .home-panel-group { display: contents; }
-.panel-menu, .panel-controls { display: none; }
+.panel-menu { display: none; }
+.location-info { max-width: 650px; }
+.location-date { margin: 0 0 28px; color: #656158; font-size: 14px; line-height: 1.8; }
+.festival-about > summary { cursor: pointer; padding: 22px 6%; font-size: 13px; border-top: 1px solid #ffffff25; }
+.festival-about > summary:focus-visible, .stand-item > summary:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
+.stand-menu-note { color: #656158; font-size: 13px; line-height: 1.8; margin: 0 0 28px; max-width: 650px; }
+.stand-accordion { list-style: none; margin: 0; padding: 0; border-top: 1px solid #10100f30; }
+.stand-accordion > li { border-bottom: 1px solid #10100f30; }
+.stand-item > summary { display: flex; align-items: center; gap: 14px; list-style: none; cursor: pointer; min-height: 76px; padding: 20px 8px; }
+.stand-item > summary::-webkit-details-marker { display: none; }
+.stand-name { font-size: 23px; font-weight: 600; letter-spacing: -.025em; }
+.stand-toggle { margin-left: auto; color: var(--red); font-size: 25px; }
+.stand-toggle::before { content: "+"; }
+.stand-item[open] .stand-toggle::before { content: "−"; }
+.stand-item-content { padding: 0 8px 26px 38px; }
+.stand-item-content p { color: #656158; font-size: 13px; line-height: 1.8; margin: 0 0 16px; }
+.stand-item-content .text-link { margin: 14px 0 0; display: flex; width: fit-content; }
+.organizer-section > h2 > span { color: #807e76; }
+.organizer-section .organizer { margin: 35px 0 0; }
 @keyframes koi-float { 0%,100% { transform: rotate(-12deg) translateY(0); } 50% { transform: rotate(-8deg) translateY(-9px); } }
 
 @media (min-width: 1600px) {
@@ -310,13 +328,10 @@ h2 em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; color:
   .home-page .panel-menu a[aria-current="location"] span { color: var(--orange); }
   .home-page .home-panels { display: flex; position: relative; flex: 1 1 0; min-height: 0; min-width: 0; width: 100%; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; scroll-padding: 0; scrollbar-width: none; }
   .home-page .home-panels > [data-panel] { display: block; flex: 0 0 100%; width: 100%; height: 100%; min-width: 0; overflow-y: auto; overflow-x: hidden; scroll-snap-align: start; scroll-snap-stop: always; scroll-margin: 0; overscroll-behavior-y: contain; }
-  .home-page .panel-controls { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: var(--ink); border-top: 1px solid #ffffff25; }
-  .home-page .panel-controls button { display: grid; place-items: center; width: 44px; height: 44px; background: transparent; border: 1px solid #ffffff40; color: var(--paper); font-size: 20px; cursor: pointer; }
-  .home-page .panel-controls button:disabled { opacity: .25; cursor: not-allowed; }
-  .home-page .panel-controls button:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
-  .home-page .panel-controls > div { text-align: center; }
-  .home-page .panel-controls p { margin: 0; font-size: 11px; }
-  .home-page .panel-controls span { display: block; margin-top: 5px; font-size: 9px; color: var(--muted); }
+  .home-page .home-panels > [data-panel] { padding-bottom: calc(32px + env(safe-area-inset-bottom)); }
+  .home-page .home-panels > .home-panel-group { padding-bottom: env(safe-area-inset-bottom); }
+  .stand-name { font-size: 19px; }
+  .stand-item-content { padding-left: 8px; }
   .home-page .home-panel-group .hero { padding: 18px 6%; }
   .home-page .hero-grid { position: relative; display: block; min-height: 0; padding: 24px 0; }
   .home-page .hero-copy { position: relative; z-index: 2; }

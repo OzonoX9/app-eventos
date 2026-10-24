@@ -19,27 +19,27 @@ Se recomienda Node.js 24 LTS (Node.js 23 del entorno actual genera una advertenc
 - `public/natsumatsuri-2026.ics`: fecha para calendario, 21:00 UTC = 18:00 en Paraguay. Si cambia la fecha, actualizar también este archivo y los textos de fecha en portada y metadatos.
 - `app/icon.png`: icono del evento.
 
-El programa detallado y los patrocinadores se muestran como pendientes hasta disponer de información confirmada. El enlace de ubicación abre una búsqueda del recinto en Google Maps, no un pin de coordenadas verificadas. El dibujo de ubicación es ilustrativo.
+El cronograma detallado y los auspiciantes se muestran como pendientes hasta disponer de información confirmada. Ubicación muestra texto del recinto, fecha y hora, y un enlace de búsqueda en Google Maps; no se presenta un mapa ilustrado como ubicación real.
 
 ### Navegación de la portada
 
-En pantallas de hasta 760 px, solo la portada usa siete paneles horizontales con CSS Scroll Snap. Se puede navegar deslizando, desde el menú compacto o con anterior/siguiente. Cada panel largo tiene scroll vertical propio; el último incluye organizadores, cierre y pie de página. Las anclas existentes y el historial siguen funcionando.
+En pantallas de hasta 760 px, solo la portada usa siete paneles horizontales con CSS Scroll Snap: Inicio, Ubicación, Croquis, Stands, Cronograma, Auspiciantes y Organizador. Se navega deslizando o desde el menú superior, sin barra inferior de flechas ni contador. Cada panel largo tiene scroll vertical propio; el último incluye organizador, cierre y pie de página. El texto del festival queda plegado dentro de Inicio. Las anclas y el historial siguen funcionando.
 
 `app/components/HomePanels.tsx` sincroniza el panel visible con el menú y la URL; el contenido sigue renderizado en servidor. Las reglas están acotadas a `.home-page`. En escritorio se conserva el flujo vertical. `/mapa` y `/stands/[id]` no usan el contenedor de paneles.
 
 ### Croquis y stands
 
-El croquis y la lista de stands tienen secciones propias. Se muestra el plano facilitado y una lista provisional de cinco stands identificados por color y nueve puestos de alquiler por definir.
+El croquis y la lista de stands tienen secciones propias. La lista incluye solo los cinco stands nombrados, en acordeones nativos cerrados inicialmente, con color, ubicación y enlace al flyer o menú de ejemplo. No incluye puestos de alquiler.
 
 Para incorporar el croquis, guardar la imagen en `public/` y completar `evento.croquis` en `lib/evento.ts` con `src` (ruta pública), `alt` (descripción accesible), `ancho` y `alto` (dimensiones reales). La imagen se adapta al ancho disponible y puede abrirse en tamaño completo. Mantener `null` hasta tener el recurso definitivo.
 
-Para incorporar stands, completar `evento.stands` con `id` único, `nombre` y `categoria`. Cada stand admite también `descripcion`, `ubicacion` (referencia al croquis) e `instagram` (URL completa). Mantener el array vacío hasta confirmar los participantes.
+Para incorporar stands, completar `evento.stands` con `id` único, `nombre` y `categoria`. Cada stand admite también `descripcion`, `ubicacion` (referencia al croquis), `instagram` (URL completa) y `flyer` (ruta pública o URL del flyer oficial). Mantener el array vacío hasta confirmar los participantes.
 
 El organizador es Nikkai Seinen Pirapó y su enlace oficial es https://www.instagram.com/nikkaiseinen_pirapo/. El perfil se enlaza sin cargar contenido ni rastreadores de Instagram en la página.
 
 ### Mapa interactivo y menús de muestra
 
-Desde la sección Croquis se abre `/mapa` en una pestaña nueva. Las cinco zonas sobre los stands identificados enlazan a `/stands/[id]`. También se puede navegar desde la lista junto al plano o desde las tarjetas de la portada. Los nueve alquileres no son interactivos ni tienen página de menú.
+Desde la sección Croquis se abre `/mapa` en una pestaña nueva. Las cinco zonas sobre los stands identificados enlazan a `/stands/[id]`. También se puede navegar desde la lista junto al plano o desde los acordeones de la portada. No se generan páginas de menú para puestos sin nombre confirmado.
 
 `puntoMapa` en `lib/evento.ts` define `x`, `y`, `ancho` y `alto` en porcentajes del croquis completo, sin recorte. Si cambia el plano, revisar estas coordenadas. El mapa se ajusta al ancho disponible sin barra de zoom ni desplazamiento interno; también se puede elegir un stand desde la lista o abrir el croquis original.
 

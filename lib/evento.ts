@@ -13,6 +13,7 @@ export type Stand = {
   color?: "amarillo" | "verde" | "rojo" | "blanco" | "morado";
   pendiente?: boolean;
   puntoMapa?: ZonaMapa;
+  flyer?: string;
 };
 
 type Evento = {
@@ -103,12 +104,6 @@ export const evento: Evento = {
       puntoMapa: { x: 74.7, y: 39.8, ancho: 10.5, alto: 8 },
       ubicacion: "Sector derecho del croquis, entre Pirapó Centro y el Acceso 1.",
     },
-    ...Array.from({ length: 9 }, (_, indice): Stand => ({
-      id: `alquiler-${indice + 1}`,
-      nombre: `Stand de alquiler ${String(indice + 1).padStart(2, "0")}`,
-      categoria: "Stand de alquiler",
-      pendiente: true,
-    })),
   ],
   programa: [
     {

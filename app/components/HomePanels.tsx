@@ -4,18 +4,17 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export const PANELES = [
   { id: "inicio", nombre: "Inicio" },
-  { id: "festival", nombre: "El festival" },
-  { id: "programa", nombre: "Programa" },
   { id: "ubicacion", nombre: "Ubicación" },
   { id: "croquis", nombre: "Croquis" },
   { id: "stands", nombre: "Stands" },
-  { id: "patrocinadores", nombre: "Organizadores" },
+  { id: "programa", nombre: "Cronograma" },
+  { id: "patrocinadores", nombre: "Auspiciantes" },
+  { id: "organizador", nombre: "Organizador" },
 ] as const;
 
 export default function HomePanels({ header, children }: { header: ReactNode; children: ReactNode }) {
   const root = useRef<HTMLDivElement>(null);
   const menu = useRef<HTMLElement>(null);
-  const navegar = useRef<(id: string) => void>(() => {});
   const [activo, setActivo] = useState(0);
 
   useEffect(() => {
@@ -44,7 +43,6 @@ export default function HomePanels({ header, children }: { header: ReactNode; ch
         deck!.scrollTo({ left: destino.offsetLeft, behavior: reducido.matches ? "instant" : "smooth" });
         if (window.location.hash !== `#${id}`) window.history.pushState(window.history.state, "", `#${id}`);
       }
-      navegar.current = ir;
 
       const observer = new IntersectionObserver((entradas) => {
         for (const entrada of entradas) {
@@ -85,7 +83,6 @@ export default function HomePanels({ header, children }: { header: ReactNode; ch
         resize.disconnect();
         pagina!.removeEventListener("click", click);
         window.removeEventListener("hashchange", desdeHash);
-        navegar.current = () => {};
       };
     }
 
@@ -108,11 +105,6 @@ export default function HomePanels({ header, children }: { header: ReactNode; ch
         ))}
       </nav>
       {children}
-      <div className="panel-controls">
-        <button type="button" aria-label="Sección anterior" aria-controls="contenido" disabled={activo === 0} onClick={() => navegar.current(PANELES[activo - 1].id)}>←</button>
-        <div><p role="status">{activo + 1} / {PANELES.length} — {PANELES[activo].nombre}</p><span>Deslizá para cambiar de sección</span></div>
-        <button type="button" aria-label="Sección siguiente" aria-controls="contenido" disabled={activo === PANELES.length - 1} onClick={() => navegar.current(PANELES[activo + 1].id)}>→</button>
-      </div>
     </div>
   );
 }
