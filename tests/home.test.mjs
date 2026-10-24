@@ -23,7 +23,7 @@ function cargarModulo(ruta, dependencias = {}) {
   return contexto.exports;
 }
 
-const { evento } = cargarModulo("../lib/evento.ts");
+const { evento, obtenerStandsDelMapa } = cargarModulo("../lib/evento.ts");
 
 function renderizar(configuracion = evento) {
   const { default: Home } = cargarModulo("../app/page.tsx", {
@@ -126,6 +126,69 @@ test("todos los enlaces internos apuntan a un identificador existente", () => {
   for (const [, target] of html.matchAll(/href="#([^"]+)"/g)) {
     assert.ok(ids.has(target), `Ancla inexistente: ${target}`);
   }
+});
+
+test("solo los cinco stands nombrados tienen zona interactiva y las coordenadas están dentro del croquis", () => {
+  const stands = obtenerStandsDelMapa();
+  assert.equal(stands.length, 5);
+  for (const stand of stands) {
+    assert.ok(!stand.pendiente);
+    assert.ok(!stand.id.startsWith("alquiler-"));
+    const { x, y, ancho, alto } = stand.puntoMapa;
+    assert.ok(x >= 0 && y >= 0 && ancho > 0 && alto > 0);
+    assert.ok(x + ancho <= 100 && y + alto <= 100);
+  }
+  assert.equal(obtenerStandsDelMapa([{
+    id: "alquiler-prueba", nombre: "Alquiler de prueba", categoria: "Alquiler",
+    pendiente: true, puntoMapa: { x: 10, y: 10, ancho: 10, alto: 10 },
+  }]).length, 0);
+  const html = renderizar();
+  const enlaceMapa = [...html.matchAll(/<a\b[^>]*>/g)].find(([tag]) => tag.includes('href="/mapa"'));
+  assert.ok(enlaceMapa);
+  assert.match(enlaceMapa[0], /target="_blank"/);
+  assert.equal([...html.matchAll(/href="\/stands\//g)].length, 5);
+  assert.ok(!html.includes('href="/stands/alquiler-'));
+});
+
+test("los cinco menús estáticos muestran contenido de muestra y los alquileres no tienen página", async () => {
+  const { menuEjemplo } = cargarModulo("../lib/menu-ejemplo.ts");
+  const pagina = cargarModulo("../app/stands/[id]/page.tsx", {
+    "@/lib/evento": { obtenerStandsDelMapa },
+    "@/lib/menu-ejemplo": { menuEjemplo },
+    "@/app/mapa/mapa.module.css": { default: new Proxy({}, { get: (_, key) => key }) },
+    "next/navigation": { notFound: () => { throw new Error("NOT_FOUND"); } },
+  });
+  assert.equal(pagina.dynamicParams, false);
+  assert.equal(pagina.generateStaticParams().length, 5);
+  for (const stand of obtenerStandsDelMapa()) {
+    const params = Promise.resolve({ id: stand.id });
+    const html = renderToStaticMarkup(await pagina.default({ params }));
+    assert.ok(html.replaceAll("&#x27;", "'").includes(stand.nombre));
+    assert.match(html, /Menú de ejemplo — no es el menú oficial/);
+    assert.match(html, /href="\/mapa#stand-/);
+    for (const plato of menuEjemplo) assert.ok(html.includes(plato.nombre));
+  }
+  await assert.rejects(() => pagina.default({ params: Promise.resolve({ id: "alquiler-1" }) }), /NOT_FOUND/);
+  await assert.rejects(() => pagina.default({ params: Promise.resolve({ id: "inexistente" }) }), /NOT_FOUND/);
+});
+
+test("el mapa conserva los cinco enlaces sin barra ni controles de zoom", () => {
+  const { default: Mapa } = cargarModulo("../app/mapa/MapaInteractivo.tsx", {
+    "./mapa.module.css": { default: new Proxy({}, { get: (_, key) => key }) },
+    "next/image": {
+      __esModule: true,
+      default: ({ src, alt, width, height }) => createElement("img", { src, alt, width, height }),
+    },
+  });
+  const html = renderToStaticMarkup(createElement(Mapa, {
+    croquis: evento.croquis,
+    stands: obtenerStandsDelMapa(),
+  }));
+  assert.ok(!html.includes("<button"));
+  assert.ok(!html.includes("<output"));
+  assert.ok(!html.includes("Ampliá para ver los detalles"));
+  assert.ok(!html.includes("Ajustar a pantalla"));
+  assert.equal([...html.matchAll(/data-stand=/g)].length, 5);
 });
 
 test("el croquis publicado existe y conserva sus dimensiones y enlace a tamaño completo", () => {

@@ -1,6 +1,8 @@
 export type Actividad = { hora: string; titulo: string; descripcion: string };
 export type Patrocinador = { nombre: string; logo: string; url?: string };
 export type Croquis = { src: string; alt: string; ancho: number; alto: number };
+/** Coordenadas porcentuales sobre el croquis original, sin recortes. */
+export type ZonaMapa = { x: number; y: number; ancho: number; alto: number };
 export type Stand = {
   id: string;
   nombre: string;
@@ -10,6 +12,7 @@ export type Stand = {
   instagram?: string;
   color?: "amarillo" | "verde" | "rojo" | "blanco" | "morado";
   pendiente?: boolean;
+  puntoMapa?: ZonaMapa;
 };
 
 type Evento = {
@@ -65,6 +68,7 @@ export const evento: Evento = {
       nombre: "Pirapó Km 23",
       categoria: "Stand identificado",
       color: "amarillo",
+      puntoMapa: { x: 74.7, y: 57, ancho: 10.5, alto: 8 },
       ubicacion: "Sector derecho del croquis, debajo del Acceso 1 y encima de Acacaraya.",
     },
     {
@@ -72,6 +76,7 @@ export const evento: Evento = {
       nombre: "Pirapó Centro",
       categoria: "Stand identificado",
       color: "verde",
+      puntoMapa: { x: 74.7, y: 30.6, ancho: 10.5, alto: 8 },
       ubicacion: "Sector superior derecho del croquis, debajo de los stands de alquiler y encima de Ca'arendy.",
     },
     {
@@ -79,6 +84,7 @@ export const evento: Evento = {
       nombre: "Pirapó Km 13",
       categoria: "Stand identificado",
       color: "rojo",
+      puntoMapa: { x: 61.3, y: 66.5, ancho: 10.5, alto: 8 },
       ubicacion: "Sector inferior del croquis, entre la degustación de sake y Acacaraya.",
     },
     {
@@ -86,6 +92,7 @@ export const evento: Evento = {
       nombre: "Acacaraya",
       categoria: "Stand identificado",
       color: "blanco",
+      puntoMapa: { x: 74.9, y: 66.4, ancho: 10.5, alto: 8 },
       ubicacion: "Sector inferior derecho del croquis, debajo de Pirapó Km 23.",
     },
     {
@@ -93,6 +100,7 @@ export const evento: Evento = {
       nombre: "Ca'arendy",
       categoria: "Stand identificado",
       color: "morado",
+      puntoMapa: { x: 74.7, y: 39.8, ancho: 10.5, alto: 8 },
       ubicacion: "Sector derecho del croquis, entre Pirapó Centro y el Acceso 1.",
     },
     ...Array.from({ length: 9 }, (_, indice): Stand => ({
@@ -111,3 +119,9 @@ export const evento: Evento = {
   ],
   patrocinadores: [],
 };
+
+export function obtenerStandsDelMapa(stands: readonly Stand[] = evento.stands) {
+  return stands.filter((stand): stand is Stand & { puntoMapa: ZonaMapa } =>
+    !stand.pendiente && Boolean(stand.puntoMapa),
+  );
+}

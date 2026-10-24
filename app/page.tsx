@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { evento } from "@/lib/evento";
 
 function Arrow() {
@@ -129,6 +130,10 @@ export default function Home() {
           </div>
           {evento.croquis ? (
             <figure className="venue-plan-figure">
+              <div className="map-entry">
+                <Link href="/mapa" target="_blank" rel="noopener noreferrer" className="button button-red">Abrir mapa interactivo <Arrow /></Link>
+                <p>Se abre en una pestaña nueva. Tocá los cinco stands con nombre para consultar sus menús de ejemplo.</p>
+              </div>
               <a href={evento.croquis.src} target="_blank" rel="noopener noreferrer" aria-label="Abrir el croquis del evento en tamaño completo">
                 <Image src={evento.croquis.src} alt={evento.croquis.alt} width={evento.croquis.ancho} height={evento.croquis.alto} sizes="(max-width: 760px) 88vw, 86vw" />
               </a>
@@ -161,7 +166,7 @@ export default function Home() {
               {evento.stands.map((stand) => (
                 <li key={stand.id} className="stand-card">
                   <div className="stand-meta"><span>{stand.categoria}</span>{stand.pendiente && <span className="stand-pending-tag">POR DEFINIR</span>}</div>
-                  <h3>{stand.nombre}</h3>
+                  <h3>{stand.puntoMapa && !stand.pendiente ? <Link href={`/stands/${stand.id}`}>{stand.nombre} <Arrow /></Link> : stand.nombre}</h3>
                   {stand.color && <p className="stand-color-label"><span className={`stand-color stand-color-${stand.color}`} aria-hidden="true" /><span>Color en el croquis: <strong>{stand.color}</strong></span></p>}
                   {stand.ubicacion && <p className="stand-location">{stand.ubicacion}</p>}
                   {stand.pendiente && <p>Ocupante y ubicación individual por confirmar.</p>}

@@ -23,13 +23,21 @@ El programa detallado y los patrocinadores se muestran como pendientes hasta dis
 
 ### Croquis y stands
 
-El croquis y la lista de stands tienen secciones propias con avisos de información pendiente. No se muestran puestos ni distribuciones ficticias.
+El croquis y la lista de stands tienen secciones propias. Se muestra el plano facilitado y una lista provisional de cinco stands identificados por color y nueve puestos de alquiler por definir.
 
 Para incorporar el croquis, guardar la imagen en `public/` y completar `evento.croquis` en `lib/evento.ts` con `src` (ruta pública), `alt` (descripción accesible), `ancho` y `alto` (dimensiones reales). La imagen se adapta al ancho disponible y puede abrirse en tamaño completo. Mantener `null` hasta tener el recurso definitivo.
 
 Para incorporar stands, completar `evento.stands` con `id` único, `nombre` y `categoria`. Cada stand admite también `descripcion`, `ubicacion` (referencia al croquis) e `instagram` (URL completa). Mantener el array vacío hasta confirmar los participantes.
 
 El organizador es Nikkai Seinen Pirapó y su enlace oficial es https://www.instagram.com/nikkaiseinen_pirapo/. El perfil se enlaza sin cargar contenido ni rastreadores de Instagram en la página.
+
+### Mapa interactivo y menús de muestra
+
+Desde la sección Croquis se abre `/mapa` en una pestaña nueva. Las cinco zonas sobre los stands identificados enlazan a `/stands/[id]`. También se puede navegar desde la lista junto al plano o desde las tarjetas de la portada. Los nueve alquileres no son interactivos ni tienen página de menú.
+
+`puntoMapa` en `lib/evento.ts` define `x`, `y`, `ancho` y `alto` en porcentajes del croquis completo, sin recorte. Si cambia el plano, revisar estas coordenadas. El mapa se ajusta al ancho disponible sin barra de zoom ni desplazamiento interno; también se puede elegir un stand desde la lista o abrir el croquis original.
+
+Los platos de `lib/menu-ejemplo.ts` son ilustrativos y comunes a los cinco stands, sin precios confirmados. Cada página advierte que no es un menú oficial y permite volver a su posición en el mapa. Las páginas de muestra tienen `noindex` para evitar presentarlas como ofertas definitivas en buscadores.
 
 ## Validación
 

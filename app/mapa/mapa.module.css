@@ -1,0 +1,93 @@
+.page { max-width: 1500px; margin: auto; padding: 30px 5% 70px; }
+.page a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+.header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 0 28px; border-bottom: 1px solid #ffffff25; }
+.header > span { font-size: 10px; letter-spacing: .12em; color: var(--muted); }
+.back { display: inline-flex; min-height: 44px; align-items: center; font-size: 13px; }
+.back:hover, .originalLink:hover { color: var(--orange); }
+.intro { margin: 45px 0 28px; }
+.intro > p:first-child { color: var(--orange); }
+.intro h1 { font-size: clamp(38px, 4.8vw, 70px); font-weight: 800; letter-spacing: -.05em; line-height: 1.07; margin: 18px 0 25px; }
+.intro h1 em, .menuItems h2 em { font-family: Georgia, serif; font-weight: 400; color: var(--orange); }
+.intro > p:last-child { font-size: 14px; line-height: 1.8; color: var(--muted); max-width: 630px; }
+.notice { border-left: 3px solid var(--orange); padding: 18px 22px; margin: 28px 0; background: #f58b000c; font-size: 13px; line-height: 1.8; color: #bcb8af; }
+.notice strong { color: var(--paper); }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 295px; gap: 28px; align-items: start; }
+.mapPanel { min-width: 0; border: 1px solid #ffffff30; }
+.mapViewport { overflow: hidden; }
+.mapStage { position: relative; width: 100%; min-width: 0; }
+.mapImage { display: block; width: 100%; height: auto; }
+.hotspot { position: absolute; min-width: 44px; min-height: 44px; display: flex; align-items: flex-end; justify-content: center; border: 3px solid var(--marker, var(--orange)); border-radius: 6px; background: color-mix(in srgb, var(--marker, var(--orange)) 18%, transparent); box-shadow: 0 0 0 2px #10100fcc; z-index: 1; transition: background .2s, box-shadow .2s; scroll-margin: 40px; }
+.hotspot:hover, .hotspot:focus-visible { z-index: 2; background: #ffffff50; box-shadow: 0 0 0 4px #10100fcc, 0 0 0 6px var(--marker, var(--orange)); }
+.hotspotBadge { background: var(--ink); color: #fff; border-radius: 3px; padding: 4px 6px; font-size: 10px; white-space: nowrap; transform: translateY(50%); }
+.hotspotLabel { position: absolute; bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 8px 11px; font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none; }
+.hotspot:hover .hotspotLabel, .hotspot:focus-visible .hotspotLabel { opacity: 1; }
+.amarillo { --marker: #e2c72d; }
+.verde { --marker: #1aad50; }
+.rojo { --marker: #dd251d; }
+.blanco { --marker: #fff; }
+.morado { --marker: #752bdf; }
+.swatch { display: inline-block; width: 16px; height: 16px; border: 1px solid #ffffff70; background: var(--marker); border-radius: 50%; flex-shrink: 0; }
+.legend { border: 1px solid #ffffff25; padding: 25px 22px; }
+.legend > p:first-child { color: var(--orange); font-size: 9px; }
+.legend h2 { font-size: 27px; line-height: 1.2; margin: 15px 0; letter-spacing: -.03em; }
+.legend > p { font-size: 12px; line-height: 1.8; color: var(--muted); }
+.legend ul { list-style: none; padding: 0; margin: 25px 0; }
+.legend li { border-top: 1px solid #ffffff20; }
+.legend li:last-child { border-bottom: 1px solid #ffffff20; }
+.legendLink { display: flex; gap: 12px; align-items: center; padding: 20px 0; min-height: 60px; }
+.legendLink strong { display: block; font-size: 14px; font-weight: 500; }
+.legendLink small { display: block; margin-top: 6px; font-size: 10px; color: var(--muted); text-transform: capitalize; }
+.legendLink > span:last-child { margin-left: auto; color: var(--orange); }
+.legendLink:hover strong { color: var(--orange); }
+.legend .legendNote { font-size: 11px; }
+.originalLink { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; text-decoration: underline; text-underline-offset: 5px; }
+.menuPage { max-width: 1000px; }
+.menuSheet { background: var(--paper); color: var(--ink); }
+.menuTop { display: flex; justify-content: space-between; gap: 20px; padding: 22px 35px; border-bottom: 1px solid #10100f30; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+.menuIdentity { padding: 40px 35px; background: var(--red); color: #fff; }
+.menuIdentity .swatch { width: 25px; height: 25px; box-shadow: 0 0 0 3px #10100f35; }
+.menuIdentity > p { font-size: 9px; letter-spacing: .15em; margin: 22px 0 10px; }
+.menuIdentity h1 { font-size: clamp(35px, 6vw, 67px); font-weight: 800; letter-spacing: -.05em; line-height: 1.1; margin: 0 0 25px; overflow-wrap: anywhere; }
+.sampleTag { display: inline-block; border: 1px solid #ffffff90; padding: 8px 10px; font-size: 9px; letter-spacing: .1em; }
+.menuItems { padding: 40px 35px; }
+.menuItems h2 { font-size: clamp(28px, 3.8vw, 43px); margin-bottom: 30px; }
+.menuItems h2 em { color: #b33120; }
+.menuItems ul { list-style: none; padding: 0; margin: 0; }
+.menuItems li { display: grid; grid-template-columns: 25px minmax(0, 1fr) auto; gap: 20px; border-top: 1px solid #10100f30; padding: 25px 0; align-items: center; }
+.itemNumber { font: 10px monospace; color: #797368; }
+.itemCategory { font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: #797368; }
+.menuItems h3 { font-size: 24px; font-weight: 600; margin: 8px 0; letter-spacing: -.03em; }
+.menuItems li p { font-size: 12px; line-height: 1.8; color: #656158; margin: 0; }
+.itemPrice { font-size: 10px; text-align: right; line-height: 1.7; color: #656158; }
+.menuFooter { padding: 0 35px 35px; border-top: 1px solid #10100f30; }
+.menuFooter p { margin: 20px 0; font-size: 12px; line-height: 1.8; color: #656158; }
+.menuFooter strong { color: var(--ink); font-weight: 600; }
+.menuFooter a { display: inline-flex; align-items: center; min-height: 44px; color: #a72a18; font-size: 12px; border-bottom: 1px solid #a72a18; }
+.menuPage > .originalLink { margin-top: 22px; }
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: 1fr; }
+  .legend ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 25px; }
+}
+@media (max-width: 600px) {
+  .page { padding: 20px 5% 45px; }
+  .header { gap: 8px; padding-bottom: 18px; }
+  .header > span { font-size: 8px; }
+  .intro { margin-top: 30px; }
+  .intro h1 { font-size: 39px; }
+  .intro > p:last-child, .notice { font-size: 12px; }
+  .notice { padding: 16px; }
+  .hotspot { min-width: 24px; min-height: 24px; border-width: 2px; }
+  .hotspotBadge { font-size: 11px; padding: 2px 4px; }
+  .badgeText { display: none; }
+  .legend { padding: 22px; }
+  .legend ul { grid-template-columns: 1fr; }
+  .menuTop { padding: 20px; font-size: 8px; }
+  .menuIdentity, .menuItems { padding: 30px 22px; }
+  .menuItems li { grid-template-columns: 18px minmax(0, 1fr); gap: 12px; }
+  .menuItems h3 { font-size: 21px; }
+  .itemPrice { grid-column: 2; text-align: left; }
+  .menuFooter { padding: 0 22px 25px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hotspot { transition: none; }
+}
