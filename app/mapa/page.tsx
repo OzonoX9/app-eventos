@@ -6,7 +6,7 @@ import styles from "./mapa.module.css";
 
 export const metadata: Metadata = {
   title: "Mapa interactivo — Natsumatsuri 2026",
-  description: "Explorá el croquis de Natsumatsuri y consultá los menús de muestra de los cinco stands identificados.",
+  description: "Explorá el croquis de Natsumatsuri y consultá los flyers y menús de los cinco stands identificados.",
 };
 
 export default function PaginaMapa() {
@@ -19,10 +19,10 @@ export default function PaginaMapa() {
       <div className={styles.intro}>
         <p className="eyebrow">EXPLORÁ EL FESTIVAL</p>
         <h1>Tu próxima parada,<br /><em>en el mapa.</em></h1>
-        <p>Tocá uno de los cinco stands señalados para ver su menú de ejemplo. Los puestos de alquiler no son interactivos.</p>
+        <p>Tocá uno de los cinco stands señalados para consultar su flyer o menú.</p>
       </div>
       <aside className={styles.notice}>
-        <strong>Vista de demostración.</strong> Los platos son ilustrativos y no representan la oferta real de ningún stand. Los menús definitivos y precios todavía no están confirmados.
+        <strong>Flyers y menús.</strong> Los stands que todavía no tienen su flyer muestran un menú de ejemplo, identificado como ilustrativo.
       </aside>
       {evento.croquis ? (
         <MapaInteractivo croquis={evento.croquis} stands={obtenerStandsDelMapa()} />

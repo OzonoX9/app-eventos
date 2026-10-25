@@ -33,7 +33,9 @@ El croquis y la lista de stands tienen secciones propias. La lista incluye solo 
 
 Para incorporar el croquis, guardar la imagen en `public/` y completar `evento.croquis` en `lib/evento.ts` con `src` (ruta pública), `alt` (descripción accesible), `ancho` y `alto` (dimensiones reales). La imagen se adapta al ancho disponible y puede abrirse en tamaño completo. Mantener `null` hasta tener el recurso definitivo.
 
-Para incorporar stands, completar `evento.stands` con `id` único, `nombre` y `categoria`. Cada stand admite también `descripcion`, `ubicacion` (referencia al croquis), `instagram` (URL completa) y `flyer` (ruta pública o URL del flyer oficial). Mantener el array vacío hasta confirmar los participantes.
+Para incorporar stands, completar `evento.stands` con `id` único, `nombre` y `categoria`. Cada stand admite también `descripcion`, `ubicacion` (referencia al croquis), `instagram` (URL completa) y `flyer`. Para cargar un flyer, guardar su imagen en `public/flyers/` y configurar `flyer` con `src` (ruta pública), `alt` (descripción del menú), `ancho` y `alto` reales.
+
+Pirapó Km 23 ya tiene su imagen en `public/flyers/pirapo-km-23.jpeg` (720 × 1280). Su página muestra el flyer completo sin recortes ni precios añadidos, con opciones para abrir el original y descargarlo. El mismo formato sirve para los próximos flyers, sin necesidad de transcribir el menú ni introducir precios.
 
 El organizador es Nikkai Seinen Pirapó y su enlace oficial es https://www.instagram.com/nikkaiseinen_pirapo/. El perfil se enlaza sin cargar contenido ni rastreadores de Instagram en la página.
 
@@ -43,7 +45,7 @@ Desde la sección Croquis se abre `/mapa` en una pestaña nueva. Las cinco zonas
 
 `puntoMapa` en `lib/evento.ts` define `x`, `y`, `ancho` y `alto` en porcentajes del croquis completo, sin recorte. Si cambia el plano, revisar estas coordenadas. El mapa se ajusta al ancho disponible sin barra de zoom ni desplazamiento interno; también se puede elegir un stand desde la lista o abrir el croquis original.
 
-Los platos de `lib/menu-ejemplo.ts` son ilustrativos y comunes a los cinco stands, sin precios confirmados. Cada página advierte que no es un menú oficial y permite volver a su posición en el mapa. Las páginas de muestra tienen `noindex` para evitar presentarlas como ofertas definitivas en buscadores.
+Las páginas con `flyer` muestran esa imagen en lugar del menú de muestra. Los stands que todavía no tienen flyer usan el contenido ilustrativo de `lib/menu-ejemplo.ts`, con un aviso visible y `noindex` para evitar presentar ejemplos como ofertas definitivas en buscadores. Tanto los flyers como los ejemplos permiten volver a su posición en el mapa.
 
 ## Validación
 

@@ -33,17 +33,19 @@ export default function Home() {
         <section className="hero" id="inicio" aria-labelledby="hero-title">
           <div className="hero-topline">
             <span className="eyebrow"><i /> TRADICIÓN QUE NOS ENCUENTRA</span>
-            <span className="hero-edition">夏祭り <span>EDICIÓN {evento.edicion}</span></span>
+            {/*<span className="hero-edition">夏祭り <span>EDICIÓN {evento.edicion}</span></span>*/}
           </div>
           <div className="hero-grid">
             <div className="hero-copy">
               <p className="hero-location">PIRAPÓ, PARAGUAY</p>
               <h1 id="hero-title"><span className="sr-only">Natsumatsuri 2026</span><span aria-hidden="true">NATSU<br /><span className="title-outline">MATSURI</span><span className="title-period">.</span></span></h1>
               <p className="hero-description">{evento.lema}</p>
-              <div className="hero-actions">
+              {
+              /* <div className="hero-actions">
                 <a className="button button-red" href="/natsumatsuri-2026.ics" download>Nos vemos el 14 de noviembre <Arrow /></a>
                 <a className="text-link" href="#ubicacion">Ubicación del evento <span aria-hidden="true">↓</span></a>
-              </div>
+              </div> */
+              }
             </div>
             <div className="hero-art">
               <div className="art-orbit orbit-one" />
@@ -56,14 +58,14 @@ export default function Home() {
               <span className="art-caption">EL ESPÍRITU DEL ENCUENTRO</span>
             </div>
           </div>
-          <div className="hero-bottom"><span>UN ENCUENTRO. MUCHAS HISTORIAS.</span><a href="#ubicacion">SEGUÍ EXPLORANDO <span aria-hidden="true">↓</span></a></div>
+          <div className="hero-bottom"><span>UN ENCUENTRO. MUCHAS HISTORIAS.</span><a href="#ubicacion">SEGUÍ EXPLORANDO <span aria-hidden="true">→</span></a></div>
         </section>
 
         <section className="date-band" aria-label="Fecha y lugar del evento">
           <div className="date-number"><span>14</span><div>NOVIEMBRE<small>SÁBADO · 2026</small></div></div>
           <div className="date-time"><span>DESDE LAS</span><strong>{evento.hora}<small> H</small></strong></div>
           <div className="date-place"><span>NOS ENCONTRAMOS EN</span><p>{evento.lugar}</p></div>
-          <a href={evento.mapa} target="_blank" rel="noopener noreferrer" className="date-arrow" aria-label="Buscar la ubicación en Google Maps"><Arrow /></a>
+          {/* <a href={evento.mapa} target="_blank" rel="noopener noreferrer" className="date-arrow" aria-label="Buscar la ubicación en Google Maps"><Arrow /></a> */}
         </section>
           <details className="festival-about" id="festival">
             <summary>Sobre Natsumatsuri</summary>
@@ -75,7 +77,7 @@ export default function Home() {
               <p className="lead">La alegría que nos une!!</p>
               <p>Este 14 de noviembre, Natsumatsuri vuelve a reunirnos en Pirapó. Una invitación a compartir la cultura japonesa, reencontrarnos y ser parte de una misma celebración.</p>
               <p>Reservá la fecha y vení a vivir una noche que se construye entre todos.</p>
-              <a className="text-link dark-link" href="#ubicacion">Nuestro punto de encuentro <Arrow /></a>
+              {/* <a className="text-link dark-link" href="#ubicacion">Nuestro punto de encuentro <Arrow /></a> */}
             </div>
           </div>
           <div className="experiences">
@@ -103,6 +105,23 @@ export default function Home() {
             <p className="muted-dark">{evento.ciudad}</p>
             <p className="location-date">{evento.fecha} de {evento.edicion} · Desde las {evento.hora} h</p>
             <a href={evento.mapa} target="_blank" rel="noopener noreferrer" className="button button-dark">Ver ubicación en Google Maps <Arrow /></a>
+            <details className="parking-options stand-item mt-6 border-y border-black/20">
+              <summary>
+                <span className="stand-name">Opciones de estacionamiento</span>
+                <span className="stand-toggle" aria-hidden="true" />
+              </summary>
+              <div className="stand-item-content">
+                <ul className="space-y-3">
+                  {evento.estacionamientos.map((estacionamiento) => (
+                    <li key={estacionamiento.url}>
+                      <a className="text-link dark-link" href={estacionamiento.url} target="_blank" rel="noopener noreferrer">
+                        <span>{estacionamiento.nombre}</span><Arrow />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
             <p className="map-note">El enlace abre la búsqueda del recinto en Google Maps.</p>
           </div>
         </section>
@@ -117,13 +136,12 @@ export default function Home() {
             <figure className="venue-plan-figure">
               <div className="map-entry">
                 <Link href="/mapa" target="_blank" rel="noopener noreferrer" className="button button-red">Abrir mapa interactivo <Arrow /></Link>
-                <p>Se abre en una pestaña nueva. Tocá los cinco stands con nombre para consultar sus menús de ejemplo.</p>
+                <p>Se abre en una pestaña nueva. Tocá los cinco stands con nombre para consultar sus flyers o menús.</p>
               </div>
               <a href={evento.croquis.src} target="_blank" rel="noopener noreferrer" aria-label="Abrir el croquis del evento en tamaño completo">
                 <Image src={evento.croquis.src} alt={evento.croquis.alt} width={evento.croquis.ancho} height={evento.croquis.alto} sizes="(max-width: 760px) 88vw, 86vw" />
               </a>
-              <figcaption>Consultá la distribución del evento. <a href={evento.croquis.src} target="_blank" rel="noopener noreferrer">Ver en tamaño completo <Arrow /></a></figcaption>
-            </figure>
+              {/*<figcaption>Consultá la distribución del evento. <a href={evento.croquis.src} target="_blank" rel="noopener noreferrer">Ver en tamaño completo <Arrow /></a></figcaption>*/}            </figure>
           ) : (
             <div className="venue-plan-pending">
               <span className="plan-symbol" aria-hidden="true"><span /><span /><span /><span /></span>
@@ -142,7 +160,7 @@ export default function Home() {
           </div>
           {stands.length > 0 ? (
             <>
-              <p className="stand-menu-note">Los menús disponibles son de ejemplo, no oficiales. Los flyers y precios definitivos se publicarán cuando estén confirmados.</p>
+              <p className="stand-menu-note">Consultá el flyer de cada stand. Los que todavía no tienen flyer muestran un menú de ejemplo, no oficial.</p>
               <ul className="stand-accordion">
                 {stands.map((stand) => (
                   <li key={stand.id}>
@@ -157,7 +175,7 @@ export default function Home() {
                         {stand.ubicacion && <p>{stand.ubicacion}</p>}
                         {stand.descripcion && <p>{stand.descripcion}</p>}
                         {stand.flyer ? (
-                          <a className="button button-dark" href={stand.flyer} target="_blank" rel="noopener noreferrer">Ver flyer / menú <Arrow /></a>
+                          <Link className="button button-dark" href={`/stands/${stand.id}`}>Ver flyer / menú <Arrow /></Link>
                         ) : stand.puntoMapa ? (
                           <Link className="button button-dark" href={`/stands/${stand.id}`}>Ver flyer / menú de ejemplo <Arrow /></Link>
                         ) : <p>Menú próximamente.</p>}
@@ -169,7 +187,7 @@ export default function Home() {
               </ul>
             </>
           ) : <p className="stand-menu-note">Estamos preparando la lista de stands.</p>}
-          <a className="text-link dark-link stands-plan-link" href="#croquis">Consultá el croquis del evento <span aria-hidden="true">↑</span></a>
+          <a className="text-link dark-link stands-plan-link" href="#croquis">Consultá el croquis del evento</a>
         </section>
 
         <section className="program section-dark" id="programa" data-panel="programa" aria-labelledby="program-title">
@@ -215,7 +233,7 @@ export default function Home() {
       <footer className="site-footer">
         <a className="footer-wordmark" href="#inicio">NATSUMATSURI<span>2026</span></a>
         <div><p>Organiza: {evento.organizador.nombre}</p><p><a href={evento.organizador.url} target="_blank" rel="noopener noreferrer">@{evento.organizador.instagram} <Arrow /></a></p><p>{evento.lugar}</p><p>{evento.ciudad}</p></div>
-        <a className="back-top" href="#inicio">VOLVER ARRIBA <span aria-hidden="true">↑</span></a>
+        <a className="back-top" href="#inicio">VOLVER Al INICIO <span aria-hidden="true">←</span></a>
       </footer>
         </div>
       </main>

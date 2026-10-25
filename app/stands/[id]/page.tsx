@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { obtenerStandsDelMapa } from "@/lib/evento";
 import { menuEjemplo } from "@/lib/menu-ejemplo";
@@ -15,8 +16,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const stand = obtenerStandsDelMapa().find((s) => s.id === id);
   return {
-    title: stand ? `${stand.nombre} — Menú de ejemplo | Natsumatsuri 2026` : "Stand no encontrado",
-    robots: { index: false, follow: false },
+    title: stand ? `${stand.nombre} — ${stand.flyer ? "Flyer y menú" : "Menú de ejemplo"} | Natsumatsuri 2026` : "Stand no encontrado",
+    robots: { index: Boolean(stand?.flyer), follow: true },
   };
 }
 
@@ -30,6 +31,24 @@ export default async function PaginaMenu({ params }: { params: Promise<{ id: str
         <Link href={`/mapa#stand-${stand.id}`} className={styles.back}>← Volver al mapa</Link>
         <span>NATSUMATSURI · 2026</span>
       </header>
+      {stand.flyer ? (
+        <section className={styles.flyerPanel} aria-labelledby="flyer-title">
+          <div className={styles.flyerHeading}>
+            <p className="eyebrow">FLYER DEL STAND · NATSUMATSURI 2026</p>
+            <h1 id="flyer-title">{stand.nombre}</h1>
+            <p>Consultá el menú en la imagen. Podés abrirla en tamaño completo o descargarla.</p>
+          </div>
+          <a href={stand.flyer.src} target="_blank" rel="noopener noreferrer" aria-label={`Abrir flyer de ${stand.nombre} en tamaño completo`}>
+            <Image src={stand.flyer.src} alt={stand.flyer.alt} width={stand.flyer.ancho} height={stand.flyer.alto} sizes="(max-width: 800px) 90vw, 720px" preload className={styles.flyerImage} />
+          </a>
+          {/*<div className={styles.flyerActions}>
+            <a href={stand.flyer.src} target="_blank" rel="noopener noreferrer">Ver en tamaño completo ↗</a>
+            <a href={stand.flyer.src} download>Descargar flyer ↓</a>
+          </div>*/}
+          <p className={styles.flyerLocation}>{stand.ubicacion}</p>
+        </section>
+      ) : (
+        <>
       <aside className={styles.notice}>
         <strong>Menú de ejemplo — no es el menú oficial.</strong> Estos platos son ficticios para mostrar el diseño. No hay oferta ni precios confirmados para este stand.
       </aside>
@@ -59,7 +78,9 @@ export default async function PaginaMenu({ params }: { params: Promise<{ id: str
           <Link href={`/mapa#stand-${stand.id}`}>Volver a explorar el mapa ↗</Link>
         </footer>
       </article>
-      <Link href="/#stands" className={styles.originalLink}>Ver todos los stands del evento ↗</Link>
+        </>
+      )}
+      {/* <Link href="/#stands" className={styles.originalLink}>Ver todos los stands del evento ↗</Link> */}
     </main>
   );
 }

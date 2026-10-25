@@ -49,6 +49,28 @@ test("muestra las dos secciones pendientes sin inventar stands ni un croquis", (
   assert.ok(!html.includes('class="venue-plan-figure"'));
 });
 
+test("estacionamientos se muestra plegado debajo del botón de ubicación con los tres enlaces facilitados", () => {
+  const html = renderizar();
+  const parking = html.match(/<details class="parking-options[^"]*"[^>]*>[\s\S]*?<\/details>/)?.[0];
+  assert.ok(parking);
+  assert.ok(!/^<details[^>]*\sopen/.test(parking));
+  assert.match(parking, /Opciones de estacionamiento/);
+  assert.ok(html.indexOf(parking) > html.indexOf("Ver ubicación en Google Maps"));
+  const opciones = [
+    ["Cancha de Fútbol Asociación Japonesa", "https://maps.app.goo.gl/NtNdv38MHT8m7nyn8"],
+    ["Salón Barrio Obrero", "https://maps.app.goo.gl/DWVKxjiUbjmTVsph6"],
+    ["Cuartel de Bomberos K109", "https://maps.app.goo.gl/kXKcFmscgSKQq5ii7"],
+  ];
+  assert.equal([...parking.matchAll(/<li>/g)].length, 3);
+  for (const [nombre, url] of opciones) {
+    assert.ok(parking.includes(nombre));
+    const enlace = [...parking.matchAll(/<a\b[^>]*>/g)].find(([tag]) => tag.includes(`href="${url}"`));
+    assert.ok(enlace);
+    assert.match(enlace[0], /target="_blank"/);
+    assert.match(enlace[0], /rel="noopener noreferrer"/);
+  }
+});
+
 test("la portada muestra solo los cinco stands nombrados en una lista colapsable", () => {
   assert.equal(evento.stands.length, 5);
   assert.equal(new Set(evento.stands.map((stand) => stand.id)).size, 5);
@@ -69,7 +91,7 @@ test("la portada muestra solo los cinco stands nombrados en una lista colapsable
   assert.ok(!html.includes('class="stand-card"'));
   assert.ok(!html.includes("Stand de alquiler"));
   assert.ok(!/<details class="stand-item"[^>]*\sopen/.test(html));
-  assert.match(html, /menús disponibles son de ejemplo, no oficiales/);
+  assert.match(html, /todavía no tienen flyer muestran un menú de ejemplo, no oficial/);
 });
 
 test("incluye el texto de Instagram, las cuatro propuestas y el organizador", () => {
@@ -96,7 +118,7 @@ test("presenta el croquis y los stands cuando se cargan datos confirmados", () =
         descripcion: "Descripción de prueba",
         ubicacion: "Puesto 01",
         instagram: "https://www.instagram.com/stand_prueba/",
-        flyer: "/flyers/stand-prueba.png",
+        flyer: { src: "/flyers/stand-prueba.png", alt: "Flyer de prueba", ancho: 720, alto: 1280 },
       },
       { id: "prueba-minimo", nombre: "Stand de prueba mínimo", categoria: "Otra categoría" },
     ],
@@ -106,7 +128,7 @@ test("presenta el croquis y los stands cuando se cargan datos confirmados", () =
   assert.match(html, /Ver en tamaño completo/);
   assert.match(html, /Stand de prueba completo/);
   assert.match(html, /Descripción de prueba/);
-  assert.match(html, /href="\/flyers\/stand-prueba.png"/);
+  assert.match(html, /href="\/stands\/prueba-completo"/);
   assert.match(html, /Puesto 01/);
   assert.match(html, /href="https:\/\/www.instagram.com\/stand_prueba\/"/);
   assert.match(html, /Stand de prueba mínimo/);
@@ -162,11 +184,15 @@ test("solo los cinco stands nombrados tienen zona interactiva y las coordenadas 
   assert.ok(!html.includes('href="/stands/alquiler-'));
 });
 
-test("los cinco menús estáticos muestran contenido de muestra y los alquileres no tienen página", async () => {
+test("las páginas de stand muestran flyer si existe y menú de muestra si falta", async () => {
   const { menuEjemplo } = cargarModulo("../lib/menu-ejemplo.ts");
   const pagina = cargarModulo("../app/stands/[id]/page.tsx", {
     "@/lib/evento": { obtenerStandsDelMapa },
     "@/lib/menu-ejemplo": { menuEjemplo },
+    "next/image": {
+      __esModule: true,
+      default: ({ src, alt, width, height, className }) => createElement("img", { src, alt, width, height, className }),
+    },
     "@/app/mapa/mapa.module.css": { default: new Proxy({}, { get: (_, key) => key }) },
     "next/navigation": { notFound: () => { throw new Error("NOT_FOUND"); } },
   });
@@ -176,9 +202,18 @@ test("los cinco menús estáticos muestran contenido de muestra y los alquileres
     const params = Promise.resolve({ id: stand.id });
     const html = renderToStaticMarkup(await pagina.default({ params }));
     assert.ok(html.replaceAll("&#x27;", "'").includes(stand.nombre));
-    assert.match(html, /Menú de ejemplo — no es el menú oficial/);
     assert.match(html, /href="\/mapa#stand-/);
-    for (const plato of menuEjemplo) assert.ok(html.includes(plato.nombre));
+    if (stand.flyer) {
+      assert.ok(html.includes(`src="${stand.flyer.src}"`));
+      assert.ok(html.includes(stand.flyer.alt));
+      assert.match(html, /Descargar flyer/);
+      assert.ok(!html.includes("Menú de ejemplo — no es el menú oficial"));
+      assert.ok(!html.includes("MENÚ ILUSTRATIVO"));
+      assert.ok(!html.includes("Sin precio"));
+    } else {
+      assert.match(html, /Menú de ejemplo — no es el menú oficial/);
+      for (const plato of menuEjemplo) assert.ok(html.includes(plato.nombre));
+    }
   }
   await assert.rejects(() => pagina.default({ params: Promise.resolve({ id: "alquiler-1" }) }), /NOT_FOUND/);
   await assert.rejects(() => pagina.default({ params: Promise.resolve({ id: "inexistente" }) }), /NOT_FOUND/);
@@ -214,4 +249,18 @@ test("el croquis publicado existe y conserva sus dimensiones y enlace a tamaño 
   assert.ok(html.includes(`href="${evento.croquis.src}"`));
   assert.ok(html.includes(evento.croquis.alt));
   assert.ok(!html.includes("El croquis estará disponible muy pronto"));
+});
+
+
+test("el flyer de Km 23 existe, es una imagen JPEG y tiene sus dimensiones reales", async () => {
+  const stand = evento.stands.find((s) => s.id === "pirapo-km-23");
+  assert.ok(stand.flyer);
+  const archivo = fileURLToPath(new URL(`../public${stand.flyer.src}`, import.meta.url));
+  const imagen = readFileSync(archivo);
+  assert.equal(imagen.readUInt16BE(0), 0xffd8);
+  const metadata = await require("sharp")(archivo).metadata();
+  assert.equal(metadata.width, stand.flyer.ancho);
+  assert.equal(metadata.height, stand.flyer.alto);
+  assert.match(stand.flyer.alt, /ramen/);
+  assert.match(stand.flyer.alt, /sin precios/);
 });

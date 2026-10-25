@@ -22,7 +22,7 @@ export default function MapaInteractivo({ croquis, stands }: {
                 id={`stand-${stand.id}`}
                 data-stand={stand.id}
                 href={`/stands/${stand.id}`}
-                aria-label={`Ver menú de ejemplo de ${stand.nombre}`}
+                aria-label={`Ver ${stand.flyer ? "flyer" : "menú de ejemplo"} de ${stand.nombre}`}
                 className={`${styles.hotspot} ${stand.color ? styles[stand.color] : ""}`}
                 style={{ left: `${stand.puntoMapa.x}%`, top: `${stand.puntoMapa.y}%`, width: `${stand.puntoMapa.ancho}%`, height: `${stand.puntoMapa.alto}%` }}
               >
@@ -42,13 +42,13 @@ export default function MapaInteractivo({ croquis, stands }: {
             <li key={stand.id}>
               <Link href={`/stands/${stand.id}`} className={styles.legendLink}>
                 <span className={`${styles.swatch} ${stand.color ? styles[stand.color] : ""}`} aria-hidden="true" />
-                <span><strong>{stand.nombre}</strong><small>{stand.color} · Menú de ejemplo</small></span>
+                <span><strong>{stand.nombre}</strong><small>{stand.color} · {stand.flyer ? "Flyer / Menú" : "Menú de ejemplo"}</small></span>
                 <span aria-hidden="true">↗</span>
               </Link>
             </li>
           ))}
         </ul>
-        <p className={styles.legendNote}>Elegí un stand con nombre para consultar su menú de muestra.</p>
+        <p className={styles.legendNote}>Elegí un stand con nombre para consultar su flyer o menú.</p>
         <a href={croquis.src} target="_blank" rel="noopener noreferrer" className={styles.originalLink}>Abrir croquis original ↗</a>
       </aside>
     </div>

@@ -1,6 +1,7 @@
 export type Actividad = { hora: string; titulo: string; descripcion: string };
 export type Patrocinador = { nombre: string; logo: string; url?: string };
 export type Croquis = { src: string; alt: string; ancho: number; alto: number };
+export type Flyer = { src: string; alt: string; ancho: number; alto: number };
 /** Coordenadas porcentuales sobre el croquis original, sin recortes. */
 export type ZonaMapa = { x: number; y: number; ancho: number; alto: number };
 export type Stand = {
@@ -13,7 +14,7 @@ export type Stand = {
   color?: "amarillo" | "verde" | "rojo" | "blanco" | "morado";
   pendiente?: boolean;
   puntoMapa?: ZonaMapa;
-  flyer?: string;
+  flyer?: Flyer;
 };
 
 type Evento = {
@@ -25,6 +26,7 @@ type Evento = {
   lugar: string;
   ciudad: string;
   mapa: string;
+  estacionamientos: { nombre: string; url: string }[];
   lema: string;
   invitacion: string;
   experiencias: { icono: string; titulo: string }[];
@@ -44,6 +46,11 @@ export const evento: Evento = {
   lugar: "Cancha de la Asociación Japonesa de Pirapó",
   ciudad: "Pirapó, Itapúa · Paraguay",
   mapa: "https://www.google.com/maps/search/?api=1&query=Cancha%20Asociaci%C3%B3n%20Japonesa%20de%20Pirap%C3%B3%20Paraguay",
+  estacionamientos: [
+    { nombre: "Cancha de Fútbol Asociación Japonesa", url: "https://maps.app.goo.gl/NtNdv38MHT8m7nyn8" },
+    { nombre: "Salón Barrio Obrero", url: "https://maps.app.goo.gl/DWVKxjiUbjmTVsph6" },
+    { nombre: "Cuartel de Bomberos K109", url: "https://maps.app.goo.gl/kXKcFmscgSKQq5ii7" },
+  ],
   lema: "Japón que nos reúne, la alegría que nos une!!",
   invitacion: "Preparate para vivir una noche especial en el Natsumatsuri 2026",
   experiencias: [
@@ -69,6 +76,12 @@ export const evento: Evento = {
       nombre: "Pirapó Km 23",
       categoria: "Stand identificado",
       color: "amarillo",
+      flyer: {
+        src: "/flyers/pirapo-km-23.jpeg",
+        alt: "Menú de Pirapó Km 23: ramen, yakisoba con fideo casero, gyoza, milanesa de carne con verduras, sushi, matcha latte, café helado y tapioca. Flyer sin precios.",
+        ancho: 720,
+        alto: 1280,
+      },
       puntoMapa: { x: 74.7, y: 57, ancho: 10.5, alto: 8 },
       ubicacion: "Sector derecho del croquis, debajo del Acceso 1 y encima de Acacaraya.",
     },
