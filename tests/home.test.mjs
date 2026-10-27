@@ -49,6 +49,22 @@ test("muestra las dos secciones pendientes sin inventar stands ni un croquis", (
   assert.ok(!html.includes('class="venue-plan-figure"'));
 });
 
+test("Acacaraya y Pirapó Centro tienen sus flyers con dimensiones correctas", async () => {
+  for (const [id, src] of [
+    ["acacaraya", "/flyers/acacaraya.webp"],
+    ["pirapo-centro", "/flyers/pirapo-centro.jpeg"],
+  ]) {
+    const stand = evento.stands.find((s) => s.id === id);
+    assert.ok(stand.flyer);
+    assert.equal(stand.flyer.src, src);
+    const archivo = fileURLToPath(new URL(`../public${src}`, import.meta.url));
+    const metadata = await require("sharp")(archivo).metadata();
+    assert.equal(metadata.width, stand.flyer.ancho);
+    assert.equal(metadata.height, stand.flyer.alto);
+    assert.match(stand.flyer.alt, /sin precios/);
+  }
+});
+
 test("estacionamientos se muestra plegado debajo del botón de ubicación con los tres enlaces facilitados", () => {
   const html = renderizar();
   const parking = html.match(/<details class="parking-options[^"]*"[^>]*>[\s\S]*?<\/details>/)?.[0];
@@ -125,7 +141,7 @@ test("presenta el croquis y los stands cuando se cargan datos confirmados", () =
   });
   assert.match(html, /src="\/croquis-prueba.png"/);
   assert.match(html, /alt="Croquis de prueba"/);
-  assert.match(html, /Ver en tamaño completo/);
+  assert.match(html, /aria-label="Abrir el croquis del evento en tamaño completo"/);
   assert.match(html, /Stand de prueba completo/);
   assert.match(html, /Descripción de prueba/);
   assert.match(html, /href="\/stands\/prueba-completo"/);
@@ -206,7 +222,8 @@ test("las páginas de stand muestran flyer si existe y menú de muestra si falta
     if (stand.flyer) {
       assert.ok(html.includes(`src="${stand.flyer.src}"`));
       assert.ok(html.includes(stand.flyer.alt));
-      assert.match(html, /Descargar flyer/);
+      assert.ok(html.includes(`href="${stand.flyer.src}"`));
+      assert.match(html, /aria-label="Abrir flyer de [^"]+ en tamaño completo"/);
       assert.ok(!html.includes("Menú de ejemplo — no es el menú oficial"));
       assert.ok(!html.includes("MENÚ ILUSTRATIVO"));
       assert.ok(!html.includes("Sin precio"));
