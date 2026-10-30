@@ -172,13 +172,17 @@ test("presenta el croquis y los stands cuando se cargan datos confirmados", () =
   assert.ok(!html.includes("Estamos preparando la lista de stands"));
 });
 
-test("la portada tiene siete paneles y conserva fecha, cierre y pie de página", () => {
+test("la portada tiene cinco paneles sin cronograma ni auspiciantes y conserva el pie", () => {
   const html = renderizar();
   const ids = [...html.matchAll(/data-panel="([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(ids.length, 7);
+  assert.equal(ids.length, 5);
   assert.equal(ids.join(","), Array.from(PANELES, (p) => p.id).join(","));
   assert.match(html, /aria-label="Secciones de la portada"/);
-  assert.equal(ids.join(","), "inicio,ubicacion,croquis,stands,programa,patrocinadores,organizador");
+  assert.ok(!html.includes('href="#programa"'));
+  assert.ok(!html.includes('href="#patrocinadores"'));
+  assert.ok(!html.includes('id="programa"'));
+  assert.ok(!html.includes('id="patrocinadores"'));
+  assert.equal(ids.join(","), "inicio,ubicacion,croquis,stands,organizador");
   assert.ok(!html.includes('class="panel-controls"'));
   assert.ok(!html.includes('aria-label="Sección anterior"'));
   assert.ok(!html.includes('aria-label="Sección siguiente"'));

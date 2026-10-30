@@ -21,8 +21,6 @@ export default function Home() {
           <a href="#ubicacion">Ubicación</a>
           <a href="#croquis">Croquis</a>
           <a href="#stands">Stands</a>
-          <a href="#programa">Cronograma</a>
-          <a href="#patrocinadores">Auspiciantes</a>
           <a href="#organizador">Organizador</a>
         </nav>
         <a className="header-cta" href="/natsumatsuri-2026.ics" download>Guardá la fecha <Arrow /></a>
@@ -190,34 +188,13 @@ export default function Home() {
           <a className="text-link dark-link stands-plan-link" href="#croquis">Consultá el croquis del evento</a>
         </section>
 
-        <section className="program section-dark" id="programa" data-panel="programa" aria-labelledby="program-title">
-          <div className="section-heading"><span className="eyebrow">05 — CRONOGRAMA DEL EVENTO</span><span className="section-note">14.11.2026 / PIRAPÓ</span></div>
-          <div className="program-heading"><h2 id="program-title">El cronograma<br /><span>de nuestra noche.</span></h2><p>El encuentro ya tiene día y hora.<br />El programa completo, muy pronto.</p></div>
-          <div className="schedule">
-            {evento.programa.map((actividad) => (
-              <article className="schedule-row" key={`${actividad.hora}-${actividad.titulo}`}>
-                <time dateTime={evento.inicio}>{actividad.hora}<small> H</small></time>
-                <div><span className="schedule-label">EL ENCUENTRO</span><h3>{actividad.titulo}</h3><p>{actividad.descripcion}</p></div>
-                <span className="schedule-star" aria-hidden="true">✳</span>
-              </article>
-            ))}
-            <div className="schedule-pending"><span className="pending-dot" /><p>Estamos preparando los detalles. Las actividades y sus horarios se anunciarán aquí.</p><span className="pending-tag">PRÓXIMAMENTE</span></div>
-          </div>
-        </section>
 
-        <section className="sponsors section-dark" id="patrocinadores" data-panel="patrocinadores" aria-labelledby="sponsors-title">
-          <div className="section-heading"><span className="eyebrow">06 — AUSPICIANTES</span></div>
-          <div className="sponsors-heading"><h2 id="sponsors-title">Una celebración.<br /><span>Muchas manos.</span></h2><p>Un espacio para reconocer a quienes<br />acompañan Natsumatsuri 2026.</p></div>
-          {evento.patrocinadores.length > 0 ? (
-            <ul className="sponsor-list">{evento.patrocinadores.map((p) => (
-              <li key={p.nombre}>{p.url ? <a href={p.url} target="_blank" rel="noopener noreferrer"><Image src={p.logo} alt={p.nombre} width={180} height={90} /></a> : <Image src={p.logo} alt={p.nombre} width={180} height={90} />}</li>
-            ))}</ul>
-          ) : <div className="sponsor-pending"><span aria-hidden="true">＋</span><p>Próximamente anunciaremos a nuestros auspiciantes.</p><small>GRACIAS POR SER PARTE.</small></div>}
-        </section>
+
+
 
         <div className="home-panel-group" data-panel="organizador">
         <section className="section-dark organizer-section" id="organizador" aria-labelledby="organizer-title">
-          <div className="section-heading"><span className="eyebrow">07 — ORGANIZADOR</span></div>
+          <div className="section-heading"><span className="eyebrow">05 — ORGANIZADOR</span></div>
           <h2 id="organizer-title">El equipo<br /><span>detrás del encuentro.</span></h2>
           <div className="organizer">
             <div><span className="eyebrow">ORGANIZA</span><h3>{evento.organizador.nombre}</h3></div>

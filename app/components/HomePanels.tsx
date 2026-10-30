@@ -7,8 +7,6 @@ export const PANELES = [
   { id: "ubicacion", nombre: "Ubicación" },
   { id: "croquis", nombre: "Croquis" },
   { id: "stands", nombre: "Stands" },
-  { id: "programa", nombre: "Cronograma" },
-  { id: "patrocinadores", nombre: "Auspiciantes" },
   { id: "organizador", nombre: "Organizador" },
 ] as const;
 
