@@ -39,6 +39,12 @@ function renderizar(configuracion = evento) {
   return renderToStaticMarkup(createElement(Home));
 }
 
+test("el pie incluye el crédito de Jin Ozono sin enlace", () => {
+  const html = renderizar();
+  assert.match(html, /<p class="site-credit">Diseño y desarrollo web: Jin Ozono<\/p>/);
+  assert.ok(html.indexOf('class="site-credit"') < html.indexOf("</footer>"));
+});
+
 test("muestra las dos secciones pendientes sin inventar stands ni un croquis", () => {
   const html = renderizar({ ...evento, croquis: null, stands: [] });
   assert.match(html, /id="croquis"/);

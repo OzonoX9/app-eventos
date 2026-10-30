@@ -144,6 +144,7 @@ h2 em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; color:
 .footer-wordmark { font-family: Impact, "Arial Narrow", sans-serif; font-size: 25px; letter-spacing: -.02em; }
 .footer-wordmark span { display: block; font-family: monospace; font-size: 11px; letter-spacing: .23em; font-weight: 400; color: var(--orange); margin-top: 5px; }
 .site-footer > div p { color: var(--muted); font-size: 10px; line-height: 1.8; margin: 0; }
+.site-credit { grid-column: 1 / -1; border-top: 1px solid #ffffff20; padding-top: 18px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.8; }
 .back-top { display: flex; align-items: center; gap: 20px; font-size: 8px; letter-spacing: .1em; }
 .back-top span { font-size: 24px; }
 .experiences { margin-top: 48px; }

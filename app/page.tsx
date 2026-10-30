@@ -211,6 +211,7 @@ export default function Home() {
         <a className="footer-wordmark" href="#inicio">NATSUMATSURI<span>2026</span></a>
         <div><p>Organiza: {evento.organizador.nombre}</p><p><a href={evento.organizador.url} target="_blank" rel="noopener noreferrer">@{evento.organizador.instagram} <Arrow /></a></p><p>{evento.lugar}</p><p>{evento.ciudad}</p></div>
         <a className="back-top" href="#inicio">VOLVER Al INICIO <span aria-hidden="true">←</span></a>
+        <p className="site-credit">Diseño y desarrollo web: Jin Ozono</p>
       </footer>
         </div>
       </main>
