@@ -49,6 +49,26 @@ test("muestra las dos secciones pendientes sin inventar stands ni un croquis", (
   assert.ok(!html.includes('class="venue-plan-figure"'));
 });
 
+test("Km 13 y Ka'arendy tienen sus flyers y los cinco stands cuentan con menú en imagen", async () => {
+  assert.ok(evento.stands.every((stand) => stand.flyer));
+  assert.equal(evento.stands.find((stand) => stand.id === "kaarendy").nombre, "Ka'arendy");
+  for (const [id, src] of [
+    ["pirapo-km-13", "/flyers/pirapo-km-13.jpeg"],
+    ["kaarendy", "/flyers/kaarendy.jpeg"],
+  ]) {
+    const stand = evento.stands.find((s) => s.id === id);
+    assert.equal(stand.flyer.src, src);
+    const archivo = fileURLToPath(new URL(`../public${src}`, import.meta.url));
+    const metadata = await require("sharp")(archivo).metadata();
+    assert.equal(metadata.width, stand.flyer.ancho);
+    assert.equal(metadata.height, stand.flyer.alto);
+    assert.match(stand.flyer.alt, /sin precios/);
+  }
+  const html = renderizar();
+  assert.ok(html.includes("Ka&#x27;arendy"));
+  assert.match(html, /href="\/stands\/kaarendy"/);
+});
+
 test("Acacaraya y Pirapó Centro tienen sus flyers con dimensiones correctas", async () => {
   for (const [id, src] of [
     ["acacaraya", "/flyers/acacaraya.webp"],
@@ -92,7 +112,7 @@ test("la portada muestra solo los cinco stands nombrados en una lista colapsable
   assert.equal(new Set(evento.stands.map((stand) => stand.id)).size, 5);
   const colores = {
     "Pirapó Km 23": "amarillo", "Pirapó Centro": "verde", "Pirapó Km 13": "rojo",
-    Acacaraya: "blanco", "Ca'arendy": "morado",
+    Acacaraya: "blanco", "Ka'arendy": "morado",
   };
   for (const stand of evento.stands) {
     assert.equal(stand.color, colores[stand.nombre]);
@@ -221,7 +241,7 @@ test("las páginas de stand muestran flyer si existe y menú de muestra si falta
     assert.match(html, /href="\/mapa#stand-/);
     if (stand.flyer) {
       assert.ok(html.includes(`src="${stand.flyer.src}"`));
-      assert.ok(html.includes(stand.flyer.alt));
+      assert.ok(html.replaceAll("&#x27;", "'").includes(stand.flyer.alt));
       assert.ok(html.includes(`href="${stand.flyer.src}"`));
       assert.match(html, /aria-label="Abrir flyer de [^"]+ en tamaño completo"/);
       assert.ok(!html.includes("Menú de ejemplo — no es el menú oficial"));
